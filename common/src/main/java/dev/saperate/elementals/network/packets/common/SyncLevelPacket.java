@@ -1,0 +1,46 @@
+package dev.saperate.elementals.network.packets.common;
+
+import commonnetwork.api.Network;
+import commonnetwork.networking.data.PacketContext;
+import commonnetwork.networking.data.Side;
+import dev.saperate.elementals.client.data.ClientBender;
+import dev.saperate.elementals.data.Bender;
+import dev.saperate.elementals.network.ElementalsNetworking;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+
+public record SyncLevelPacket(int level, float xp) {
+    public static final StreamCodec<FriendlyByteBuf, SyncLevelPacket> STREAM_CODEC = StreamCodec.ofMember(SyncLevelPacket::encode, SyncLevelPacket::new);
+
+
+    public SyncLevelPacket(FriendlyByteBuf buf) {
+        this(buf.readInt(), buf.readFloat());
+    }
+
+    public static CustomPacketPayload.Type<CustomPacketPayload> type() {
+        return new CustomPacketPayload.Type<>(ElementalsNetworking.SYNC_LEVEL_PACKET_ID);
+    }
+
+    public static SyncLevelPacket createFromBender(Bender bender) {
+        return new SyncLevelPacket(bender.plrData.level, bender.plrData.xp);
+    }
+
+    public static void handle(PacketContext<SyncLevelPacket> ctx) {
+        if (ctx.side().equals(Side.CLIENT)) {
+            SyncLevelPacket packet = ctx.message();
+
+            ClientBender.get().level = packet.level;
+            ClientBender.get().xp = packet.xp;
+        } else {
+            ServerPlayer player = ctx.sender();
+            Network.getNetworkHandler().sendToClient(createFromBender(Bender.getBender(player)), player);
+        }
+    }
+
+    public void encode(FriendlyByteBuf buf) {
+        buf.writeInt(level);
+        buf.writeFloat(xp);
+    }
+}

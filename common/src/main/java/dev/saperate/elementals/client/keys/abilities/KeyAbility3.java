@@ -1,0 +1,16 @@
+package dev.saperate.elementals.client.keys.abilities;
+
+import dev.saperate.elementals.client.keys.KeyInput;
+import org.lwjgl.glfw.GLFW;
+
+public class KeyAbility3 extends KeyInput {
+
+    public KeyAbility3() {
+        registerAbilityInput(
+                GLFW.GLFW_KEY_V,
+                2,
+                "key.elementals.Ability3",
+                "category.elementals"
+        );
+    }
+}

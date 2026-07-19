@@ -1,0 +1,123 @@
+package dev.saperate.elementals;
+
+import dev.saperate.elementals.advancements.HasElementCriterion;
+import dev.saperate.elementals.advancements.UsedAbilityCriterion;
+import dev.saperate.elementals.armors.materials.ElementalsArmorMaterial;
+import dev.saperate.elementals.blocks.ElementalsBlocks;
+import dev.saperate.elementals.data.Bender;
+import dev.saperate.elementals.data.ElementalConfig;
+import dev.saperate.elementals.data.PlayerData;
+import dev.saperate.elementals.effects.ElementalsStatusEffects;
+import dev.saperate.elementals.elements.NoneElement;
+import dev.saperate.elementals.elements.air.AirElement;
+import dev.saperate.elementals.elements.blood.BloodElement;
+import dev.saperate.elementals.elements.earth.EarthElement;
+import dev.saperate.elementals.elements.fire.FireElement;
+import dev.saperate.elementals.elements.lightning.LightningElement;
+import dev.saperate.elementals.elements.metal.MetalElement;
+import dev.saperate.elementals.elements.water.WaterElement;
+import dev.saperate.elementals.enchantments.ElementalsEnchantments;
+import dev.saperate.elementals.entities.ElementalEntities;
+import dev.saperate.elementals.items.ElementalsDynamicRecipes;
+import dev.saperate.elementals.items.ElementalsItems;
+import dev.saperate.elementals.misc.BlockRestoreManager;
+import dev.saperate.elementals.misc.ElementalsSounds;
+import dev.saperate.elementals.misc.IItemRenderProvider;
+import dev.saperate.elementals.mixin.SimpleParticleTypeAccessor;
+import dev.saperate.elementals.network.ElementalsNetworking;
+import dev.saperate.elementals.platform.Services;
+import dev.saperate.elementals.platform.services.IRegistryHelper.TriggerHolder;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.GameRules;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Elementals {
+    public static final Logger LOGGER = LoggerFactory.getLogger(Constants.MODID);
+    public static final SimpleParticleType LIGHTNING_PARTICLE_TYPE = SimpleParticleTypeAccessor.callConstructor(false);
+    public static final SimpleParticleType METAL_SHARD_PARTICLE_TYPE = SimpleParticleTypeAccessor.callConstructor(false);
+    public static TriggerHolder<HasElementCriterion.Conditions, HasElementCriterion> HAS_ELEMENT
+            = Services.REGISTRY.registerCriterion(HasElementCriterion.getName(), new HasElementCriterion());
+    public static TriggerHolder<UsedAbilityCriterion.Conditions, UsedAbilityCriterion> USED_ABILITY
+            = Services.REGISTRY.registerCriterion(UsedAbilityCriterion.getName(), new UsedAbilityCriterion());
+    public static IItemRenderProvider GLIDER_ITEM_RENDER_PROVIDER = () -> null;
+    public static IItemRenderProvider METAL_ARMOR_RENDER_PROVIDER = () -> null;
+    public static GameRules.Key<GameRules.BooleanValue> BENDING_GRIEFING = Services.REGISTRY.registerGameRule(
+            "bendingGriefing",
+            GameRules.Category.MISC,
+            Services.REGISTRY.createGameruleIntegerType(true)
+    );
+
+    public static void init() {
+        LOGGER.info("Initialising the cool stuff...");
+        ElementalConfig.get().loadConfig();
+
+        ElementalsStatusEffects.register();
+        ElementalsItems.register();
+        ElementalsArmorMaterial.register();
+        ElementalsBlocks.register();
+        ElementalsEnchantments.register();
+        ElementalEntities.register();
+        ElementalsSounds.register();
+        ElementalsNetworking.register();
+        ElementalsDynamicRecipes.register();
+
+        Services.REGISTRY.registerLootTables();
+        Services.REGISTRY.registerCommands();
+        Services.REGISTRY.registerParticleType("lightning", LIGHTNING_PARTICLE_TYPE);
+        Services.REGISTRY.registerParticleType("metal_shard", METAL_SHARD_PARTICLE_TYPE);
+        registerElements();
+
+        Services.EVENTS.onPlayerJoin(Elementals::onPlayerJoin);
+        Services.EVENTS.onPlayerDisconnect(Elementals::onPlayerDisconnect);
+        Services.EVENTS.onPlayerRespawn(Elementals::onPlayerRespawn);
+        Services.EVENTS.onServerClose(Elementals::onServerStop);
+        Services.EVENTS.onServerTick(Elementals::onServerTick);
+    }
+
+
+    private static void registerElements() {
+        new NoneElement();
+        new WaterElement();
+        new FireElement();
+        new EarthElement();
+        new AirElement();
+        new LightningElement();
+        new BloodElement();
+        new MetalElement();
+    }
+
+    public static void onPlayerJoin(ServerPlayer player) {
+        Bender.getBender(player).syncElements();
+    }
+
+    private static void onPlayerDisconnect(ServerPlayer player) {
+        Bender.benders.remove(player.getUUID());
+    }
+
+    private static void onPlayerRespawn(ServerPlayer newPlayer) {
+        Bender bender = Bender.getBender(newPlayer);
+
+        if (bender.currAbility != null) {
+            bender.currAbility.onRemove(bender);
+            bender.setCurrAbility(null);
+            bender.abilityData = null;
+        }
+        bender.player = newPlayer;
+
+        PlayerData.get(newPlayer).chi = 100;
+        bender.syncChi();
+    }
+
+    private static void onServerStop(MinecraftServer minecraftServer) {
+        Bender.benders.clear();
+        BlockRestoreManager.reset();
+    }
+
+    private static void onServerTick(MinecraftServer server) {
+        BlockRestoreManager.tick(server);
+    }
+
+}

@@ -1,0 +1,118 @@
+package dev.saperate.elementals.elements.metal;
+
+import dev.saperate.elementals.data.Bender;
+import dev.saperate.elementals.data.PlayerData;
+import dev.saperate.elementals.elements.Ability;
+import dev.saperate.elementals.entities.metal.MetalBulletEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+
+import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
+
+public class AbilityMetalBullets implements Ability {
+
+    @Override
+    public void onCall(Bender bender, long deltaT) {
+        Player player = bender.player;
+        if (!bender.plrData.canUseUpgrade("metalBullet")
+                || !bender.reduceChi(20) || !MetalElement.canBend(player, 16)) {
+            if (bender.abilityData == null) {
+                bender.setCurrAbility(null);
+            } else {
+                onRemove(bender);
+            }
+            return;
+        }
+
+        Vec3 pos = getEntityLookVector(player, 2);
+        PlayerData plrData = PlayerData.get(bender.player);
+
+        int bulletCount = 10;
+        if (plrData.canUseUpgrade("metalBulletCountII")) {
+            bulletCount = 20;
+        } else if (plrData.canUseUpgrade("metalBulletCountI")) {
+            bulletCount = 15;
+        }
+
+        MetalBulletEntity[] bullets = new MetalBulletEntity[bulletCount];
+        for (int i = 0; i < bulletCount; i++) {
+            MetalBulletEntity entity = new MetalBulletEntity(player.level(), player, pos.x, pos.y, pos.z);
+            entity.setArrayId(i);
+            entity.setArraySize(bulletCount);
+            bullets[i] = entity;
+
+            player.level().addFreshEntity(entity);
+        }
+        bender.abilityData = bullets;
+        bender.setCurrAbility(this);
+    }
+
+
+    @Override
+    public void onLeftClick(Bender bender, boolean started) {
+        if (started) {
+            return;
+        }
+        FireBullet(bender);
+    }
+
+    @Override
+    public void onMiddleClick(Bender bender, boolean started) {//Buckshot
+        MetalBulletEntity[] bullets = (MetalBulletEntity[]) bender.abilityData;
+        if (started || bullets == null || !bender.plrData.canUseUpgrade("metalBulletScatterShotI")) {
+            return;
+        }
+
+        for (MetalBulletEntity bullet : bullets) {
+            float speed = 4;
+            bullet.setControlled(false);
+            bullet.setDeltaMovement(bender.player, bender.player.getXRot(), bender.player.getYRot(), 0, speed, 10);
+            bullet.setDamageMultiplier(0.5f);
+        }
+        bender.abilityData = null;
+        onRemove(bender);
+    }
+
+    @Override
+    public void onTick(Bender bender) {
+        if (bender.isHolding(0, 4) && bender.player.tickCount % 3 == 0) {
+            FireBullet(bender);
+        }
+    }
+
+    @Override
+    public void onRemove(Bender bender) {
+        MetalBulletEntity[] bullets = (MetalBulletEntity[]) bender.abilityData;
+        if (bullets != null) {
+            for (MetalBulletEntity bullet : bullets) {
+                bullet.kill();
+            }
+        }
+        bender.setCurrAbility(null);
+    }
+
+    private void FireBullet(Bender bender) {
+        MetalBulletEntity[] bullets = (MetalBulletEntity[]) bender.abilityData;
+
+        assert bullets != null;
+        MetalBulletEntity bullet = bullets[bullets.length - 1];
+        bullet.setControlled(false);
+
+        float speed = 2;
+        bullet.setDeltaMovement(bender.player, bender.player.getXRot(), bender.player.getYRot(), 0, speed, 0);
+
+        if (bullets.length == 1) {
+            bender.abilityData = null; // Prevents onRemove from killing bullets
+            onRemove(bender);
+            return;
+        }
+
+        MetalBulletEntity[] newArray = new MetalBulletEntity[bullets.length - 1];
+        for (int i = 0; i < bullets.length - 1; i++) {
+            bullets[i].setArraySize(bullets.length - 1);
+            newArray[i] = bullets[i];
+        }
+        bender.abilityData = newArray;
+    }
+
+}

@@ -1,0 +1,207 @@
+package dev.saperate.elementals.entities.metal;
+
+import dev.saperate.elementals.entities.common.AbstractElementalsEntity;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+import static dev.saperate.elementals.entities.ElementalEntities.METALCABLE;
+import static dev.saperate.elementals.utils.SapsUtils.keepOtherEntityNearEntity;
+import static dev.saperate.elementals.utils.SapsUtils.summonParticles;
+
+public class MetalCableEntity extends AbstractElementalsEntity<LivingEntity> {
+    private static final EntityDataAccessor<Boolean> FROZEN = SynchedEntityData.defineId(MetalCableEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DISTANCE = SynchedEntityData.defineId(MetalCableEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> PARENT_ID = SynchedEntityData.defineId(MetalCableEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CHILD_ID = SynchedEntityData.defineId(MetalCableEntity.class, EntityDataSerializers.INT);
+    public int chainLength = 0;
+    public Vec3 prevDir = Vec3.ZERO;
+
+
+    public MetalCableEntity(EntityType<MetalCableEntity> type, Level world) {
+        super(type, world, LivingEntity.class);
+    }
+
+    public MetalCableEntity(Level world, LivingEntity owner, double x, double y, double z) {
+        super(METALCABLE.get(), world, LivingEntity.class);
+        setOwner(owner);
+        setPos(x, y, z);
+
+        setControlled(true);
+    }
+
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROZEN, false);
+        builder.define(DISTANCE, 18f);
+        builder.define(PARENT_ID, 0);
+        builder.define(CHILD_ID, 0);
+    }
+
+    public void createChain(LivingEntity owner, int MAX_CHAIN_LENGTH) {
+        if (chainLength < MAX_CHAIN_LENGTH) {
+            MetalCableEntity newArc = new MetalCableEntity(level(), owner, getX(), getY(), getZ());
+            newArc.setParent(this);
+            setChild(newArc);
+            newArc.setControlled(false);
+            level().addFreshEntity(newArc);
+            chainLength++;
+            newArc.chainLength = chainLength;
+            newArc.createChain(owner, MAX_CHAIN_LENGTH);
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        LivingEntity owner = getOwner();
+        if (owner == null && isRemoved()) {
+            return;
+        }
+
+        MetalCableEntity parent = getParent();
+        moveEntity(owner, parent);
+    }
+
+
+    private void moveEntity(Entity owner, Entity parent) {
+        if (getChild() == null) {
+            moveEntityTowardsGoal(owner.getEyePosition().toVector3f(), getMovementSpeed() * 4);
+            if (!getFrozen()) {
+                this.move(MoverType.SELF, this.getDeltaMovement());
+            }
+            return;
+        }
+
+        if (parent == null) {
+            moveEntityTowardsGoal(owner.getEyePosition().toVector3f(), getMovementSpeed());
+            owner.removeVehicle();
+            keepOtherEntityNearEntity(getTail(), owner, getDistance());
+        }
+        if (!getFrozen()) {
+            this.move(MoverType.SELF, this.getDeltaMovement());
+        }
+    }
+
+
+    @Override
+    public void onClientRemoval() {
+        if (getIsControlled()) {
+            return;
+        }
+        summonParticles(this, random,
+                ParticleTypes.ASH,
+                0.01f, 10);
+    }
+
+    /**
+     * Safely despawns the arc along with all of its children
+     */
+    public void despawn() {
+        if (level().isClientSide) {
+            return;
+        }
+        getHead().remove();
+    }
+
+    public MetalCableEntity getHead() {
+        MetalCableEntity parent = getParent();
+        if (parent == null) {
+            return this;
+        }
+        return parent.getHead();
+    }
+
+    public MetalCableEntity getTail() {
+        MetalCableEntity child = getChild();
+        if (child == null) {
+            return this;
+        }
+        return child.getTail();
+    }
+
+
+    /**
+     * remove a specific link from the chain. it also kills its children
+     */
+    public void remove() {
+        MetalCableEntity child = getChild();
+        if (child == null) {
+            if (getParent() == null) {
+                this.discard();
+                return;
+            }
+            getParent().setChild(null);
+            this.discard();
+            return;
+        }
+        child.remove();
+        MetalCableEntity parent = getParent();
+        if (parent != null) {
+            getParent().setChild(null);
+        }
+        this.discard();
+    }
+
+
+    public MetalCableEntity getParent() {
+        int parentId = this.getEntityData().get(PARENT_ID);
+        Entity parent = this.level().getEntity(parentId);
+        return parent instanceof MetalCableEntity ? (MetalCableEntity) this.level().getEntity(parentId) : null;
+    }
+
+    public void setParent(MetalCableEntity parent) {
+        this.getEntityData().set(PARENT_ID, parent != null ? parent.getId() : 0);
+    }
+
+    public MetalCableEntity getChild() {
+        int childId = this.getEntityData().get(CHILD_ID);
+        Entity child = this.level().getEntity(childId);
+        return child instanceof MetalCableEntity ? (MetalCableEntity) this.level().getEntity(childId) : null;
+    }
+
+    public void setChild(MetalCableEntity child) {
+        this.getEntityData().set(CHILD_ID, child != null ? child.getId() : 0);
+    }
+
+    public boolean getFrozen() {
+        return this.getEntityData().get(FROZEN);
+    }
+
+    public void setFrozen(boolean val) {
+        this.getEntityData().set(FROZEN, val);
+    }
+
+    public float getDistance() {
+        return this.getEntityData().get(DISTANCE);
+    }
+
+    public void setDistance(float val) {
+        this.getEntityData().set(DISTANCE, val);
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return getParent() == null;
+    }
+
+    @Override
+    public boolean pushesEntitiesAway() {
+        return false;
+    }
+
+    @Override
+    public boolean discardsOnNullOwner() {
+        return true;
+    }
+}

@@ -1,0 +1,92 @@
+package dev.saperate.elementals.elements.air;
+
+import dev.saperate.elementals.data.Bender;
+import dev.saperate.elementals.data.PlayerData;
+import dev.saperate.elementals.elements.Ability;
+import dev.saperate.elementals.entities.air.AirBulletEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+
+import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
+
+public class AbilityAirBullets implements Ability {
+
+    @Override
+    public void onCall(Bender bender, long deltaT) {
+        if (!bender.reduceChi(15)) {
+            if (bender.abilityData == null) {
+                bender.setCurrAbility(null);
+            } else {
+                onRemove(bender);
+            }
+            return;
+        }
+        Player player = bender.player;
+
+        Vec3 pos = getEntityLookVector(player, 2);
+        PlayerData plrData = PlayerData.get(bender.player);
+
+        int bulletCount = 5;
+        if (plrData.canUseUpgrade("airBulletsCountII")) {
+            bulletCount = 20;
+        } else if (plrData.canUseUpgrade("airBulletsCountI")) {
+            bulletCount = 10;
+        }
+
+        AirBulletEntity[] bullets = new AirBulletEntity[bulletCount];
+        for (int i = 0; i < bulletCount; i++) {
+            AirBulletEntity entity = new AirBulletEntity(player.level(), player, pos.x, pos.y, pos.z);
+            entity.setArrayId(i);
+            entity.setArraySize(bulletCount);
+            bullets[i] = entity;
+
+            player.level().addFreshEntity(entity);
+        }
+        bender.abilityData = bullets;
+        bender.setCurrAbility(this);
+    }
+
+
+    @Override
+    public void onLeftClick(Bender bender, boolean started) {
+        if (started) {
+            return;
+        }
+        AirBulletEntity[] bullets = (AirBulletEntity[]) bender.abilityData;
+
+        if (bullets.length == 1) {
+            onRemove(bender);
+        }
+
+        AirBulletEntity bullet = bullets[bullets.length - 1];
+        bullet.setControlled(false);
+        PlayerData plrData = PlayerData.get(bender.player);
+
+        float speed = 1;
+        if (plrData.canUseUpgrade("airBulletsSpeedII")) {
+            speed = 2;
+        } else if (plrData.canUseUpgrade("airBulletsSpeedI")) {
+            speed = 1.5f;
+        }
+        bullet.setDeltaMovement(bender.player, bender.player.getXRot(), bender.player.getYRot(), 0, speed, 0);
+
+        AirBulletEntity[] newArray = new AirBulletEntity[bullets.length - 1];
+        for (int i = 0; i < bullets.length - 1; i++) {
+            bullets[i].setArraySize(bullets.length - 1);
+            newArray[i] = bullets[i];
+        }
+        bender.abilityData = newArray;
+    }
+
+    @Override
+    public void onRemove(Bender bender) {
+        AirBulletEntity[] bullets = (AirBulletEntity[]) bender.abilityData;
+        if (bullets != null) {
+            for (AirBulletEntity bullet : bullets) {
+                bullet.kill();
+            }
+        }
+        bender.setCurrAbility(null);
+    }
+
+}

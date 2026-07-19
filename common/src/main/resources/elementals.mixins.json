@@ -1,0 +1,37 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.saperate.elementals.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_18",
+  "mixins": [
+    "ElementalsLivingEntityAccessor",
+    "FurnaceBlockEntityAccessor",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "MobEffectInstanceAccessor",
+    "NearestAttackableTargetGoalMixin",
+    "PlayerEntityMixin",
+    "RecipeManagerMixin",
+    "ServerPlayerEntityMixin",
+    "SimpleParticleTypeAccessor"
+  ],
+  "client": [
+    "client.CameraMixin",
+    "client.ClientPlayerEntityMixin",
+    "client.GameRendererMixin",
+    "client.GlowMixin",
+    "client.HeldItemRendererMixin",
+    "client.LivingEntityRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.MouseMixin",
+    "client.OverlayMixin",
+    "client.PlayerEntityRendererMixin",
+    "client.SpectatorMenuCommandMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+
