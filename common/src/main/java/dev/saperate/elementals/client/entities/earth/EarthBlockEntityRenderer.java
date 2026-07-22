@@ -1,12 +1,12 @@
 package dev.saperate.elementals.client.entities.earth;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.saperate.elementals.client.entities.models.earth.ShrapnelModel;
-import dev.saperate.elementals.client.entities.models.earth.SpikeModel;
-import dev.saperate.elementals.entities.earth.EarthBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import dev.saperate.elementals.client.entities.models.earth.ShrapnelModel;
+import dev.saperate.elementals.client.entities.models.earth.SpikeModel;
+import dev.saperate.elementals.entities.earth.EarthBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
