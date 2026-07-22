@@ -6,7 +6,6 @@ import dev.saperate.elementals.elements.Ability;
 import dev.saperate.elementals.entities.earth.EarthBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Vector3f;
 
 import java.util.LinkedList;
 
@@ -70,6 +69,40 @@ public class AbilityEarthBoulder implements Ability {
 
         bender.abilityData = new BoulderStack(entities, pos);
         bender.setCurrAbility(this);
+    }
+
+    /**
+     * Left click: chips a single shard off the front block and flings it as a fast dart
+     * that draws blood on hit. Doesn't consume the source block outright.
+     */
+    private void launchShrapnel(Bender bender, EarthBlockEntity source) {
+        Player player = bender.player;
+        PlayerData plrData = PlayerData.get(player);
+
+        EarthBlockEntity shrapnel = new EarthBlockEntity(player.level(), player, source.getX(), source.getY(), source.getZ());
+        shrapnel.setBlockState(source.getBlockState());
+        shrapnel.setModelShapeId(1); //reuses the sharp-shard model already used for earthBlockShrapnel
+
+        //IMPORTANT: controlled=false + setDeltaMovement gives it a real velocity impulse
+        //and lets it fly free. Leaving it controlled=true (like Earth Wall's blocks) makes
+        //it keep re-homing toward a point 3 blocks in front of the caster's eyes every
+        //tick, which for anything not already right next to the caster just yanks it back
+        //and makes it hover in place instead of actually flying away.
+        shrapnel.setControlled(false);
+        float shrapnelSpeed = plrData.canUseUpgrade("earthBoulderRangeI") ? 1.9f : 1.6f;
+        shrapnel.setDeltaMovement(player, player.getXRot(), player.getYRot(), 0, shrapnelSpeed, 1);
+        shrapnel.setDamageOnTouch(true);
+        shrapnel.setDamage(plrData.canUseUpgrade("earthBoulderDamageI") ? 4 : 2.5f);
+        shrapnel.setCollidable(true);
+        shrapnel.setShiftToFreeze(false);
+        shrapnel.setDrops(false); //shards shatter on impact, they don't leave a placed block behind
+        shrapnel.setDropOnEndOfLife(false);
+        shrapnel.setCausesBleeding(true);
+        shrapnel.setBleedDuration(60); //3s of bleeding
+        shrapnel.setBleedAmplifier(plrData.canUseUpgrade("earthBoulderDamageI") ? 1 : 0);
+        shrapnel.maxLifeTime = 20;
+
+        player.level().addFreshEntity(shrapnel);
     }
 
     @Override
@@ -138,36 +171,6 @@ public class AbilityEarthBoulder implements Ability {
     }
 
     /**
-     * Left click: chips a single shard off the front block and flings it as a fast dart
-     * that draws blood on hit. Doesn't consume the source block outright.
-     */
-    private void launchShrapnel(Bender bender, EarthBlockEntity source) {
-        Player player = bender.player;
-        PlayerData plrData = PlayerData.get(player);
-
-        EarthBlockEntity shrapnel = new EarthBlockEntity(player.level(), player, source.getX(), source.getY(), source.getZ());
-        shrapnel.setBlockState(source.getBlockState());
-        shrapnel.setModelShapeId(1); //reuses the sharp-shard model already used for earthBlockShrapnel
-
-        shrapnel.setControlled(true);
-        shrapnel.setUseOffset(true);
-        shrapnel.setTargetPosition(new Vector3f(0, 0, 0)); //homes on the caster's current look direction
-        shrapnel.setMovementSpeed(0.9f); //shards fly noticeably faster than a whole block
-        shrapnel.setDamageOnTouch(true);
-        shrapnel.setDamage(plrData.canUseUpgrade("earthBoulderDamageI") ? 4 : 2.5f);
-        shrapnel.setCollidable(true);
-        shrapnel.setShiftToFreeze(false);
-        shrapnel.setDrops(false); //shards shatter on impact, they don't leave a placed block behind
-        shrapnel.setDropOnEndOfLife(false);
-        shrapnel.setCausesBleeding(true);
-        shrapnel.setBleedDuration(60); //3s of bleeding
-        shrapnel.setBleedAmplifier(plrData.canUseUpgrade("earthBoulderDamageI") ? 1 : 0);
-        shrapnel.maxLifeTime = 20;
-
-        player.level().addFreshEntity(shrapnel);
-    }
-
-    /**
      * Right click: launches the whole front block as a single heavy hit, consuming it
      * entirely and moving on to the next block in the stack.
      */
@@ -180,10 +183,11 @@ public class AbilityEarthBoulder implements Ability {
         //mirrors how the original single-shot Boulder Throw handled range
         float range = plrData.canUseUpgrade("earthBoulderRangeI") ? 25 : 16;
 
-        entity.setControlled(true);
-        entity.setUseOffset(true);
-        entity.setTargetPosition(new Vector3f(0, 0, 0)); //homes on the caster's current look direction
-        entity.setMovementSpeed(0.6f);
+        //same fix as the shrapnel shot: real velocity via setDeltaMovement instead of the
+        //controlled homing system, which would just pull the block back toward a point
+        //near the caster instead of launching it away
+        entity.setControlled(false);
+        entity.setDeltaMovement(player, player.getXRot(), player.getYRot(), 0, 1.1f, 0);
         entity.setDamageOnTouch(true);
         entity.setDamage(damage);
         entity.setCollidable(true);

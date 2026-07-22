@@ -182,7 +182,7 @@ public abstract class AbstractElementalsEntity<OwnerType extends Entity> extends
     }
 
     public void moveEntityTowardsGoal(Vector3f goal) {
-       moveEntityTowardsGoal(goal,getMovementSpeed());
+        moveEntityTowardsGoal(goal, getMovementSpeed());
     }
 
     public void moveEntityTowardsGoal(Vector3f goal, float speed) {
@@ -271,7 +271,7 @@ public abstract class AbstractElementalsEntity<OwnerType extends Entity> extends
      * @author Mojang
      */
     public void setDeltaMovement(double x, double y, double z, float speed, float divergence) {
-        Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0, 0.0172275 * (double)divergence), this.random.triangle(0.0, 0.0172275 * (double)divergence), this.random.triangle(0.0, 0.0172275 * (double)divergence)).scale((double)speed);
+        Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(this.random.triangle(0.0, 0.0172275 * (double)divergence), this.random.triangle(0.0, 0.0172275 * (double)divergence), this.random.triangle(0.0, 0.0172275 * (double)divergence)).scale(speed);
         this.setDeltaMovement(vec3d);
         double d = vec3d.horizontalDistance();
         this.setYRot((float)(Mth.atan2(vec3d.x, vec3d.z) * 57.2957763671875));
@@ -287,7 +287,7 @@ public abstract class AbstractElementalsEntity<OwnerType extends Entity> extends
         float f = -Mth.sin(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
         float g = -Mth.sin((pitch + roll) * 0.017453292F);
         float h = Mth.cos(yaw * 0.017453292F) * Mth.cos(pitch * 0.017453292F);
-        this.setDeltaMovement((double)f, (double)g, (double)h, speed, divergence);
+        this.setDeltaMovement(f, g, h, speed, divergence);
         Vec3 vec3d = shooter.getDeltaMovement();
         this.setDeltaMovement(this.getDeltaMovement().add(vec3d.x, shooter.onGround() ? 0.0 : vec3d.y, vec3d.z));
     }
