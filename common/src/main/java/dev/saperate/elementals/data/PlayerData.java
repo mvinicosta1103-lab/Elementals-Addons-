@@ -104,12 +104,12 @@ public class PlayerData {
             // }
         }
     }
-    
-    
+
+
     public void fixUpgradeChildrenRecursive(Upgrade root, boolean enabled){
         if(root.exclusive && enabled)
             return;
-        
+
         Stack<Upgrade> disableStack = new Stack<>();
         disableStack.addAll(List.of(root.children));
 
@@ -118,12 +118,12 @@ public class PlayerData {
             if(!upgrades.containsKey(curr))
                 continue;
             upgrades.put(curr, enabled);
-            
+
             if(!enabled || !curr.exclusive)
                 disableStack.addAll(List.of(curr.children));
         }
     }
-    
+
 
     /**
      * Fixes the skill tree after we set an exclusive upgrade's status
@@ -141,8 +141,8 @@ public class PlayerData {
             upgrades.put(curr, false);
         }
     }
-    
-    
+
+
     /**
      * @return The current active element
      */

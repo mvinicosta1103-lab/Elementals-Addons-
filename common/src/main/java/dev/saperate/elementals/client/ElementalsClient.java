@@ -25,6 +25,7 @@ import dev.saperate.elementals.client.gui.CastTimerHudOverlay;
 import dev.saperate.elementals.client.gui.ChiHudOverlay;
 import dev.saperate.elementals.client.items.GliderItemRenderer;
 import dev.saperate.elementals.client.keys.KeyCycleBending;
+import dev.saperate.elementals.client.keys.KeyToggleBlueFire;
 import dev.saperate.elementals.client.keys.abilities.*;
 import dev.saperate.elementals.client.keys.gui.GuiKey;
 import dev.saperate.elementals.network.packets.C2S.SyncVersionPacket;
@@ -67,6 +68,7 @@ public class ElementalsClient {
         new KeyAbility10();
         new GuiKey();
         new KeyCycleBending();
+        new KeyToggleBlueFire();
 
         Services.EVENTS.onClientJoin(ElementalsClient::onClientJoin);
 

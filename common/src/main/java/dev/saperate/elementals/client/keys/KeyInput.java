@@ -28,7 +28,7 @@ public abstract class KeyInput {
                 category
         ));
         bindings.add(keyBinding);
-        
+
         Services.EVENTS.onClientTick(client -> {
             if (keyBinding.isDown() && !lastFrameWasHolding && !ClientBender.get().isCasting()) {
                 ClientBender.get().startCasting();

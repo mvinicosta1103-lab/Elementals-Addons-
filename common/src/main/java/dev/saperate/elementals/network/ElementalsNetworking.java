@@ -24,6 +24,7 @@ public class ElementalsNetworking {
     public static final ResourceLocation TOGGLE_UPGRADE_PACKET_ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "toggle_upgrade");
     public static final ResourceLocation CYCLE_BENDING_PACKET_ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "cycle_bending");
     public static final ResourceLocation SYNC_MOD_VERSION_PACKET_ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "get_mod_version");
+    public static final ResourceLocation TOGGLE_BLUE_FIRE_PACKET_ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "toggle_blue_fire");
 
     //COMMON
     public static final ResourceLocation SYNC_LEVEL_PACKET_ID = ResourceLocation.fromNamespaceAndPath(Constants.MODID, "sync_level");
@@ -44,8 +45,9 @@ public class ElementalsNetworking {
         Network.registerPacket(SyncVersionPacket.type(), SyncVersionPacket.class, SyncVersionPacket.STREAM_CODEC, SyncVersionPacket::handle);
         Network.registerPacket(SyncLevelPacket.type(), SyncLevelPacket.class, SyncLevelPacket.STREAM_CODEC, SyncLevelPacket::handle);
         Network.registerPacket(SyncUpgradeListPacket.type(), SyncUpgradeListPacket.class, SyncUpgradeListPacket.STREAM_CODEC, SyncUpgradeListPacket::handle);
+        Network.registerPacket(ToggleBlueFirePacket.type(), ToggleBlueFirePacket.class, ToggleBlueFirePacket.STREAM_CODEC, ToggleBlueFirePacket::handle);
     }
-    
+
     public static void expectSideOrThrow(Side currentSide, Side expectedSide){
         if(!currentSide.equals(expectedSide)){
             throw new RuntimeException("current side was not the same as the expected side!");

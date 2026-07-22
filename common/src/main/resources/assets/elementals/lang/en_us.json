@@ -46,6 +46,7 @@
   "key.elementals.Ability10": "Ability 10",
   "key.elementals.guiKey" : "Upgrade Screen",
   "key.elementals.cycle" : "Cycle Elements",
+  "key.elementals.toggle_blue_fire": "Toggle Blue Fire",
 
   "effect.elementals.dense" : "Dense",
   "effect.elementals.drowning" : "Drowning",
