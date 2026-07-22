@@ -1,6 +1,7 @@
 package dev.saperate.elementals.entities.earth;
 
 import dev.saperate.elementals.data.ElementalConfig;
+import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.entities.common.AbstractElementalsEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -10,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +39,9 @@ public class EarthBlockEntity extends AbstractElementalsEntity<Player> {
     private static final EntityDataAccessor<Boolean> SHIFT_FREEZE = SynchedEntityData.defineId(EarthBlockEntity.class, EntityDataSerializers.BOOLEAN);
 
     private boolean drops = true, damageOnTouch = false, dropOnLifeTime = false;
+    //shrapnel shards set this so their hits leave a bleeding DoT behind, on top of the direct hit damage
+    private boolean causesBleeding = false;
+    private int bleedDuration = 60, bleedAmplifier = 0;
 
 
     public EarthBlockEntity(EntityType<EarthBlockEntity> type, Level world) {
@@ -151,6 +156,7 @@ public class EarthBlockEntity extends AbstractElementalsEntity<Player> {
         LivingEntity owner = getOwner();
         if (!entity.equals(owner)) {
             entity.hurt(this.damageSources().playerAttack((Player) owner), getDamage() * ElementalConfig.get().BENDING_DAMAGE_MULTIPLIER);
+            applyBleedingIfNeeded(entity);
         } else {
             entity.fallDistance = 0;
         }
@@ -163,10 +169,17 @@ public class EarthBlockEntity extends AbstractElementalsEntity<Player> {
     public void onHitEntity(Entity entity) {
         entity.fallDistance = 0;
         entity.hurt(this.damageSources().playerAttack(getOwner()), getDamage() * ElementalConfig.get().BENDING_DAMAGE_MULTIPLIER);
+        applyBleedingIfNeeded(entity);
         entity.addDeltaMovement(this.getDeltaMovement().scale(0.5));
         entity.move(MoverType.SELF, entity.getDeltaMovement());
         entity.hurtMarked = true;
         discard();
+    }
+
+    private void applyBleedingIfNeeded(Entity entity) {
+        if (causesBleeding && entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(ElementalsStatusEffects.BLEEDING.get(), bleedDuration, bleedAmplifier, false, true, true));
+        }
     }
 
     @Override
@@ -242,6 +255,22 @@ public class EarthBlockEntity extends AbstractElementalsEntity<Player> {
 
     public void setDamageOnTouch(boolean damageOnTouch) {
         this.damageOnTouch = damageOnTouch;
+    }
+
+    public boolean getCausesBleeding() {
+        return causesBleeding;
+    }
+
+    public void setCausesBleeding(boolean val) {
+        this.causesBleeding = val;
+    }
+
+    public void setBleedDuration(int ticks) {
+        this.bleedDuration = ticks;
+    }
+
+    public void setBleedAmplifier(int amplifier) {
+        this.bleedAmplifier = amplifier;
     }
 
     public void setShiftToFreeze(boolean val) {

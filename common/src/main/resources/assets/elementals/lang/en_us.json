@@ -57,6 +57,7 @@
   "effect.elementals.static_aura" : "Static Aura",
   "effect.elementals.overcharged" : "Overcharged",
   "effect.elementals.burnout" : "Burnout",
+  "effect.elementals.bleeding": "Bleeding",
 
   "painting.elementals.peaceful_ocean.title" : "Peaceful Ocean",
   "painting.elementals.peaceful_ocean.author" : "Saperate",

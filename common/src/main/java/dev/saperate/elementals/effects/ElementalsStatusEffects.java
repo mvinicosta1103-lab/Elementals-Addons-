@@ -15,6 +15,7 @@ public final class ElementalsStatusEffects {
     public static MobEffectHolder STATIC_AURA = Services.REGISTRY.registerEffect("static_aura", new StaticAuraStatusEffect());
     public static MobEffectHolder OVERCHARGED = Services.REGISTRY.registerEffect("overcharged", new OverchargedStatusEffect());
     public static MobEffectHolder BURNOUT = Services.REGISTRY.registerEffect("burnout", new BurnoutStatusEffect());
-    
+    public static MobEffectHolder BLEEDING = Services.REGISTRY.registerEffect("bleeding", new BleedingStatusEffect());
+
     public static void register(){}
 }
