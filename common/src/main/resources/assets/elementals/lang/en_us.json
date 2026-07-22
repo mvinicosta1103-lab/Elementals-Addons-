@@ -475,11 +475,6 @@
 
   "upgrade.elementals.earthPillarTallI": "Taller Walls",
   "upgrade.elementals.earthPillarTallI.description": " Your pillars are taller.",
-  "upgrade.elementals.earthSurf": "Earth Surf",
-  "upgrade.elementals.earthSurf.description": " Conjures two chips of ground beneath your feet, letting you skate forward while sprinting.",
-  "upgrade.elementals.earthSurf.use": " Use: %d while sprinting",
-  "upgrade.elementals.earthSurfSpeedI": "Faster Surfing",
-  "upgrade.elementals.earthSurfSpeedI.description": " Increases the speed boost granted by Earth Surf.",
 
   "upgrade.elementals.earthJump": "Earth Jump",
   "upgrade.elementals.earthJump.description": " Launch yourself using earth to get high into the air.",
