@@ -13,6 +13,8 @@ import dev.saperate.elementals.elements.Upgrade;
 import dev.saperate.elementals.elements.crystal.abilities.CrystalElement;
 import dev.saperate.elementals.elements.earth.EarthElement;
 import dev.saperate.elementals.elements.mud.abilities.MudElement;
+import dev.saperate.elementals.elements.plant.PlantElement;
+import dev.saperate.elementals.elements.water.WaterElement;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -20,7 +22,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-
 
 import java.util.Locale;
 
@@ -152,6 +153,9 @@ public class BendingCommand {
     private static Element getRequiredParentElement(Element element) {
         if (element instanceof MudElement || element instanceof CrystalElement) {
             return EarthElement.get();
+        }
+        if (element instanceof PlantElement) {
+            return WaterElement.get();
         }
         return null;
     }
