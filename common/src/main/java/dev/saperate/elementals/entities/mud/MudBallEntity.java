@@ -1,6 +1,5 @@
 package dev.saperate.elementals.entities.mud;
 
-import com.example.elementalmorebendings.registry.ModEntities;
 import dev.saperate.elementals.data.ElementalConfig;
 import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.entities.common.AbstractElementalsEntity;

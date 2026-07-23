@@ -110,12 +110,11 @@ public class ElementalEntities {
     public static final Supplier<EntityType<SkyBisonEntity>> SKYBISON = Services.REGISTRY.registerEntity(
             "sky_bison", SkyBisonEntity::new, 3.25f, 3.25f);
     public static final Supplier<EntityType<MudBallEntity>> MUDBALL = Services.REGISTRY.registerEntity(
-            "mud_ball", MudBallEntity::new, < largura >, <altura>);
+            "mud_ball", MudBallEntity::new, 1, 1);
 
     public static void register() {
         Services.REGISTRY.registerDefaultEntityAttribute(DECOYPLAYER, DecoyPlayerEntity::createMobAttributes);
         Services.REGISTRY.registerDefaultEntityAttribute(SKYBISON, SkyBisonEntity::createMobAttributes);
-        Services.REGISTRY.registerClientEntityRenderer(MUDBALL, MudBallEntityRenderer::new);
     }
 
 }

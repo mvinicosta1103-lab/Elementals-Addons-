@@ -1,15 +1,15 @@
 package dev.saperate.elementals.elements.crystal.abilities;
 
-import com.example.elementalmorebendings.common.AddonTags;
 import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.Element;
+import dev.saperate.elementals.misc.ElementalsCustomTags;
 import dev.saperate.elementals.utils.SapsUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 
@@ -48,46 +48,41 @@ public final class CrystalOreSenseHandler {
     private CrystalOreSenseHandler() {
     }
 
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
-        Player rawPlayer = event.getEntity();
-        if (!(rawPlayer instanceof ServerPlayer player)) {
-            return; // só server-side; do lado cliente isso é puramente visual/replicado
-        }
-        if (player.level().getGameTime() % INTERVAL_TICKS != 0) {
+    public static void onServerTick(MinecraftServer server) {
+        if (server.getTickCount() % INTERVAL_TICKS != 0) {
             return;
         }
-
-        Element crystal = CrystalElement.get();
-        if (crystal == null) {
-            return;
-        }
-
-        Bender bender = Bender.getBender(player);
-        if (bender == null || !bender.hasElement(crystal)) {
-            return;
-        }
-
-        if (!SapsUtils.safeHasStatusEffect(ElementalsStatusEffects.SEISMIC_SENSE.get(), player)) {
-            return;
-        }
-
-        ServerLevel world = (ServerLevel) player.level();
-        BlockPos center = player.blockPosition();
-        BlockPos from = center.offset(-RADIUS, -RADIUS, -RADIUS);
-        BlockPos to = center.offset(RADIUS, RADIUS, RADIUS);
-        double radiusSqr = (double) RADIUS * RADIUS;
-
-        for (BlockPos pos : BlockPos.betweenClosed(from, to)) {
-            if (pos.distSqr(center) > radiusSqr) {
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            Element crystal = CrystalElement.get();
+            if (crystal == null) {
                 continue;
             }
-            BlockState state = world.getBlockState(pos);
-            if (!state.is(AddonTags.ORE_BLOCKS)) {
+            Bender bender = Bender.getBender(player);
+            if (bender == null || !bender.hasElement(crystal)) {
                 continue;
             }
-            world.sendParticles(player, ORE_GLOW, false,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    1, 0.15, 0.15, 0.15, 0.0);
+            if (!SapsUtils.safeHasStatusEffect(ElementalsStatusEffects.SEISMIC_SENSE.get(), player)) {
+                continue;
+            }
+
+            ServerLevel world = (ServerLevel) player.level();
+            BlockPos center = player.blockPosition();
+            BlockPos from = center.offset(-RADIUS, -RADIUS, -RADIUS);
+            BlockPos to = center.offset(RADIUS, RADIUS, RADIUS);
+            double radiusSqr = (double) RADIUS * RADIUS;
+
+            for (BlockPos pos : BlockPos.betweenClosed(from, to)) {
+                if (pos.distSqr(center) > radiusSqr) {
+                    continue;
+                }
+                BlockState state = world.getBlockState(pos);
+                if (!state.is(ElementalsCustomTags.ORE_BLOCKS)) {
+                    continue;
+                }
+                world.sendParticles(player, ORE_GLOW, false,
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        1, 0.15, 0.15, 0.15, 0.0);
+            }
         }
     }
 }

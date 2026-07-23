@@ -1,7 +1,5 @@
 package dev.saperate.elementals.elements.mud.abilities;
 
-import com.example.elementalmorebendings.mud.abilities.MudWallAbility;
-import com.example.elementalmorebendings.mud.abilities.QuicksandAbility;
 import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.elements.Element;

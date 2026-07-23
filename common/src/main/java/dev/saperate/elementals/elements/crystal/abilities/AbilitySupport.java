@@ -4,6 +4,7 @@ import dev.saperate.elementals.Elementals;
 import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.earth.EarthElement;
+import dev.saperate.elementals.misc.ElementalsCustomTags;
 import dev.saperate.elementals.misc.MasterySupport;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
-import src.main.
 
 import java.util.List;
 
@@ -62,7 +62,7 @@ final class AbilitySupport {
      */
     static boolean isOreBendable(BlockState state, Bender bender) {
         Element crystal = CrystalElement.get();
-        return crystal != null && bender.hasElement(crystal) && state.is(AddonTags.ORE_BLOCKS);
+        return crystal != null && bender.hasElement(crystal) && state.is(ElementalsCustomTags.ORE_BLOCKS);
     }
 
     /**

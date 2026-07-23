@@ -19,6 +19,7 @@ import dev.saperate.elementals.client.entities.metal.MetalLanceRenderer;
 import dev.saperate.elementals.client.entities.models.air.AirBladeModel;
 import dev.saperate.elementals.client.entities.models.metal.MetalLanceModel;
 import dev.saperate.elementals.client.entities.models.water.WaterBladeModel;
+import dev.saperate.elementals.client.entities.mud.MudBallEntityRenderer;
 import dev.saperate.elementals.client.entities.water.*;
 import dev.saperate.elementals.client.features.MetalArmorRenderer;
 import dev.saperate.elementals.client.gui.CastTimerHudOverlay;
@@ -82,6 +83,7 @@ public class ElementalsClient {
         Services.REGISTRY.registerClientModelLayer(MODEL_WATER_BLADE_LAYER, WaterBladeModel::getTexturedModelData);
         Services.REGISTRY.registerClientModelLayer(MODEL_METAL_LANCE_LAYER, MetalLanceModel::getTexturedModelData);
         Services.REGISTRY.registerClientModelLayer(MODEL_AIR_BLADE_LAYER, AirBladeModel::getTexturedModelData);
+
 
         Elementals.GLIDER_ITEM_RENDER_PROVIDER = () -> new GeoRenderProvider(){
             private final GliderItemRenderer renderer = new GliderItemRenderer();
@@ -157,6 +159,9 @@ public class ElementalsClient {
         Services.REGISTRY.registerClientEntityRenderer(METALBIND, MetalBindEntityRenderer::new);
         Services.REGISTRY.registerClientEntityRenderer(METALBULLET, MetalBulletEntityRenderer::new);
         Services.REGISTRY.registerClientEntityRenderer(METALLANCE, MetalLanceRenderer::new);
+
+        //MUD
+        Services.REGISTRY.registerClientEntityRenderer(MUDBALL, MudBallEntityRenderer::new);
     }
 
     private static void onClientJoin(Minecraft client) {
