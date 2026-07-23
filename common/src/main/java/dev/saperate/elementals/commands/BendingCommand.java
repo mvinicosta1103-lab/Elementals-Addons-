@@ -10,6 +10,9 @@ import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.data.StateDataSaverAndLoader;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
+import dev.saperate.elementals.elements.crystal.abilities.CrystalElement;
+import dev.saperate.elementals.elements.earth.EarthElement;
+import dev.saperate.elementals.elements.mud.abilities.MudElement;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -26,64 +29,64 @@ public class BendingCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandRegistryAccess, Commands.CommandSelection registrationEnvironment) {
         dispatcher.register(Commands.literal("bending")
-                        .then(Commands.literal("get").executes(BendingCommand::getSelfElement)).requires(source -> source.hasPermission(2))
-                        .then(Commands.literal("upgrade")
-                                .then(Commands.literal("list").then(
-                                        Commands.argument("player", EntityArgument.player()).executes(BendingCommand::listUpgrades)
-                                ).executes(BendingCommand::listSelfUpgrades))
-                                .then(Commands.literal("clear").then(
-                                        Commands.argument("player", EntityArgument.player()).executes(BendingCommand::clearUpgrades)
-                                ).executes(BendingCommand::clearSelfUpgrades))
-                                .then(Commands.literal("remove").then(
-                                        Commands.argument("upgradeName", StringArgumentType.string())
-                                                .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::removeUpgrade))
-                                ).executes(BendingCommand::removeSelfUpgrade))
+                .then(Commands.literal("get").executes(BendingCommand::getSelfElement)).requires(source -> source.hasPermission(2))
+                .then(Commands.literal("upgrade")
+                        .then(Commands.literal("list").then(
+                                Commands.argument("player", EntityArgument.player()).executes(BendingCommand::listUpgrades)
+                        ).executes(BendingCommand::listSelfUpgrades))
+                        .then(Commands.literal("clear").then(
+                                Commands.argument("player", EntityArgument.player()).executes(BendingCommand::clearUpgrades)
+                        ).executes(BendingCommand::clearSelfUpgrades))
+                        .then(Commands.literal("remove").then(
+                                Commands.argument("upgradeName", StringArgumentType.string())
+                                        .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::removeUpgrade))
+                        ).executes(BendingCommand::removeSelfUpgrade))
+                )
+                .then(Commands.literal("status")
+                        .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::status))
+                        .executes(BendingCommand::statusSelf)
+                )
+                .then(Commands.literal("level")
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("value", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .executes(BendingCommand::levelSet)
+                                        )
+                                        .executes(BendingCommand::levelSetSelf)
+                                )
                         )
-                        .then(Commands.literal("status")
-                                .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::status))
-                                .executes(BendingCommand::statusSelf)
-                        )
-                        .then(Commands.literal("level")
-                                .then(Commands.literal("set")
-                                        .then(Commands.argument("value", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
-                                                .then(Commands.argument("player", EntityArgument.player())
-                                                        .executes(BendingCommand::levelSet)
-                                                )
-                                                .executes(BendingCommand::levelSetSelf)
+                        .then(Commands.literal("add")
+                                .then(Commands.argument("amount", IntegerArgumentType.integer())
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .executes(BendingCommand::levelAdd)
                                         )
                                 )
-                                .then(Commands.literal("add")
-                                        .then(Commands.argument("amount", IntegerArgumentType.integer())
-                                                .then(Commands.argument("player", EntityArgument.player())
-                                                        .executes(BendingCommand::levelAdd)
-                                                )
-                                        )
-                                )
-                                .then(Commands.literal("get").then(
-                                        Commands.argument("player", EntityArgument.player()).executes(BendingCommand::levelGet)
-                                ).executes(BendingCommand::levelSelfGet))
                         )
-                        .then(Commands.literal("reset")
-                                .then(Commands.argument("player", EntityArgument.player())
-                                        .executes(BendingCommand::reset)
-                                )
-                                .executes(BendingCommand::resetSelf)
+                        .then(Commands.literal("get").then(
+                                Commands.argument("player", EntityArgument.player()).executes(BendingCommand::levelGet)
+                        ).executes(BendingCommand::levelSelfGet))
+                )
+                .then(Commands.literal("reset")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(BendingCommand::reset)
                         )
-                        .then(Commands.literal("element")
-                                        .then(Commands.literal("add").then(
-                                                Commands.argument("element", ElementArgumentType.element())
-                                                        .then(Commands.argument("player", EntityArgument.player())
-                                                                .executes(BendingCommand::addElement))
-                                                        .executes(BendingCommand::addSelfElement))
+                        .executes(BendingCommand::resetSelf)
+                )
+                .then(Commands.literal("element")
+                        .then(Commands.literal("add").then(
+                                Commands.argument("element", ElementArgumentType.element())
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .executes(BendingCommand::addElement))
+                                        .executes(BendingCommand::addSelfElement))
 
-                                        )
-                                        .then(Commands.literal("remove").then(
-                                                Commands.argument("element", ElementArgumentType.element())
-                                                        .then(Commands.argument("player", EntityArgument.player())
-                                                                .executes(BendingCommand::removeElement))
-                                                        .executes(BendingCommand::removeSelfElement))
-                                        )
                         )
+                        .then(Commands.literal("remove").then(
+                                Commands.argument("element", ElementArgumentType.element())
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .executes(BendingCommand::removeElement))
+                                        .executes(BendingCommand::removeSelfElement))
+                        )
+                )
                 .then(Commands.literal("debug").executes(BendingCommand::debug)).requires(source -> source.hasPermission(2))
 
         );
@@ -122,12 +125,35 @@ public class BendingCommand {
             return 1;
         }
 
+        Element requiredParent = getRequiredParentElement(element);
+        if (requiredParent != null && !requiredParent.isSkillTreeComplete(bender)) {
+            context.getSource().sendFailure(Component.literal(
+                    element.name + " is derived from " + requiredParent.name
+                            + " — you need to have mastered " + requiredParent.name + " Bending first.")
+            );
+            return 1;
+        }
+
         bender.addElement(element, true);
 
         context.getSource().sendSuccess((() -> Component.literal(
                 bender.player.getScoreboardName() + " can now bend: " + element.name)
         ), true);
         return 1;
+    }
+
+    /**
+     * Subbendings that were derived from a base bending (like Mud and Crystal, both derived
+     * from Earth) can only be granted -- through this command or through their scroll -- to a
+     * player who has already mastered the required parent element's skill tree. Mirrors the
+     * same gating used by {@code AbstractScrollItem#getParentElement()} for the scroll items,
+     * so /bending element add can't be used to bypass that restriction.
+     */
+    private static Element getRequiredParentElement(Element element) {
+        if (element instanceof MudElement || element instanceof CrystalElement) {
+            return EarthElement.get();
+        }
+        return null;
     }
 
     public static int addElement(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -140,6 +166,16 @@ public class BendingCommand {
         if (bender.hasElement(element)) {
             context.getSource().sendFailure(Component.literal(
                     "You could already bend: " + element.name)
+            );
+            return 1;
+        }
+
+        Element requiredParent = getRequiredParentElement(element);
+        if (requiredParent != null && !requiredParent.isSkillTreeComplete(bender)) {
+            context.getSource().sendFailure(Component.literal(
+                    element.name + " is derived from " + requiredParent.name
+                            + " — " + bender.player.getScoreboardName() + " needs to have mastered "
+                            + requiredParent.name + " Bending first.")
             );
             return 1;
         }

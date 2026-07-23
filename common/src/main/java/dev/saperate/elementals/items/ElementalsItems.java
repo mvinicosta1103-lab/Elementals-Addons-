@@ -3,18 +3,13 @@ package dev.saperate.elementals.items;
 import dev.saperate.elementals.Constants;
 import dev.saperate.elementals.armors.materials.ElementalsArmorMaterial;
 import dev.saperate.elementals.blocks.ElementalsBlocks;
-import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.items.scrolls.*;
 import dev.saperate.elementals.platform.Services;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
 import java.util.HashSet;
@@ -24,7 +19,7 @@ import java.util.function.Supplier;
 public class ElementalsItems {
 
     public static final TagKey<BannerPattern> AIR_BANNER_PATTERN_TAG = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(Constants.MODID,"air_banner_pattern"));
-    
+
     public static final FoodProperties LIGHTNING_BOTTLE_FOOD_COMPONENT = new FoodProperties.Builder()
             .alwaysEdible()
             .saturationModifier(-1.2f)
@@ -86,6 +81,12 @@ public class ElementalsItems {
     public static final Supplier<MetalScrollItem> METAL_SCROLL_ITEM = registerItem("metal_scroll",
             () -> new MetalScrollItem(new Item.Properties()
                     .stacksTo(1)));
+    public static final Supplier<MudScrollItem> MUD_SCROLL_ITEM = registerItem("mud_scroll",
+            () -> new MudScrollItem(new Item.Properties()
+                    .stacksTo(1)));
+    public static final Supplier<CrystalScrollItem> CRYSTAL_SCROLL_ITEM = registerItem("crystal_scroll",
+            () -> new CrystalScrollItem(new Item.Properties()
+                    .stacksTo(1)));
     public static final Supplier<DirtBottleItem> DIRT_BOTTLE_ITEM = registerItem("dirt_bottle",
             () -> new DirtBottleItem(new Item.Properties()
                     .stacksTo(1)));
@@ -101,11 +102,11 @@ public class ElementalsItems {
     public static final Supplier<GliderItem> GLIDER_ITEM = registerItem("glider",
             () -> new GliderItem(new Item.Properties()
                     .stacksTo(1)));
-    public static final Supplier<BannerPatternItem> AIR_BANNER_PATTERN_ITEM = registerItem( 
+    public static final Supplier<BannerPatternItem> AIR_BANNER_PATTERN_ITEM = registerItem(
             "air_banner_pattern",
             () -> new BannerPatternItem(AIR_BANNER_PATTERN_TAG,new Item.Properties()
                     .stacksTo(1)));
-    
+
     //BLOCK ITEMS
     public static final Supplier<BlockItem> MOON_PEACH_LEAVES_ITEM = registerItem(
             "moon_peach_leaves",
@@ -130,7 +131,7 @@ public class ElementalsItems {
         Services.REGISTRY.registerDispenserBehavior(DIRT_BOTTLE_ITEM, DIRT_BOTTLE_ITEM);
         Services.REGISTRY.registerCreativeTab("elementals_tab", ELEMENTALS_TAB);
     }
-    
+
     public static Set<Item> getEarthArmorSet(){
         if(EARTH_ARMOR_SET.isEmpty()){
             EARTH_ARMOR_SET.add(EARTH_HELMET.get());
