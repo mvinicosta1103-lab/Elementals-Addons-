@@ -17,6 +17,7 @@ import dev.saperate.elementals.elements.fire.FireElement;
 import dev.saperate.elementals.elements.lightning.LightningElement;
 import dev.saperate.elementals.elements.metal.MetalElement;
 import dev.saperate.elementals.elements.mud.abilities.MudElement;
+import dev.saperate.elementals.elements.plant.PlantElement;
 import dev.saperate.elementals.elements.water.WaterElement;
 import dev.saperate.elementals.enchantments.ElementalsEnchantments;
 import dev.saperate.elementals.entities.ElementalEntities;
@@ -91,6 +92,7 @@ public class Elementals {
         new MetalElement();
         new MudElement();
         new CrystalElement();
+        new PlantElement();
     }
 
     public static void onPlayerJoin(ServerPlayer player) {
