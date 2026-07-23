@@ -82,7 +82,7 @@ public class AbilityEarthBlockPickup implements Ability {
         blockEntity.setDamage(plrData.canUseUpgrade("earthBlockDamageI") ? 12 : 8);
         blockEntity.setShiftToFreeze(false);
     }
-    
+
 
     @Override
     public void onRemove(Bender bender) {
