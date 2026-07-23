@@ -10,8 +10,9 @@ import net.minecraft.world.level.block.Block;
 public class ElementalsCustomTags {
     public static final TagKey<Block> EARTH_BENDABLE_BLOCKS = createTag("earth_bendable_blocks");
     public static final TagKey<Block> METAL_BENDABLE_BLOCKS = createTag("metal_bendable_blocks");
-
+    public static final TagKey<Block> ORE_BLOCKS = createTag("ore_blocks");
     private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Constants.MODID, name));
     }
 }
+
