@@ -30,7 +30,7 @@ public class CrystalArmorAbility implements Ability {
     private static final int BASE_DURATION = 140; // 7s
     private static final int HARDENED_BONUS_DURATION = 100; // +5s com o upgrade de duração
     private static final float BASE_ABSORPTION = 4.0f; // 2 corações
-    private static final float HARDENED_ABSORPTION = 8.0f; // 4 corações
+    private static final float HARDENED_ABSORPTION = 8.0f; // 4 cora
 
     public void onCall(Bender bender, long deltaT) {
         Player player2 = bender.player;
