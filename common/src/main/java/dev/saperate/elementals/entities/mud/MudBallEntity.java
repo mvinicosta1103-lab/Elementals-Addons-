@@ -18,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
+import static dev.saperate.elementals.entities.ElementalEntities.MUDBALL;
+
 import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
 
 public class MudBallEntity extends AbstractElementalsEntity<Player> {
@@ -27,13 +29,13 @@ public class MudBallEntity extends AbstractElementalsEntity<Player> {
     }
 
     public MudBallEntity(Level world, Player owner) {
-        super(ModEntities.MUD_BALL.get(), world, Player.class);
+        super(MUDBALL.get(), world, Player.class);
         setOwner(owner);
         setPos(owner.getX(), owner.getY(), owner.getZ());
     }
 
     public MudBallEntity(Level world, Player owner, double x, double y, double z) {
-        super(ModEntities.MUD_BALL.get(), world, Player.class);
+        super(MUDBALL.get(), world, Player.class);
         setOwner(owner);
         setPos(x, y, z);
         setControlled(true);

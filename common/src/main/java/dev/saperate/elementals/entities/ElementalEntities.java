@@ -14,6 +14,7 @@ import dev.saperate.elementals.entities.metal.MetalBindEntity;
 import dev.saperate.elementals.entities.metal.MetalBulletEntity;
 import dev.saperate.elementals.entities.metal.MetalCableEntity;
 import dev.saperate.elementals.entities.metal.MetalLanceEntity;
+import dev.saperate.elementals.entities.mud.MudBallEntity;
 import dev.saperate.elementals.entities.water.*;
 import dev.saperate.elementals.platform.Services;
 import net.minecraft.world.entity.EntityType;
