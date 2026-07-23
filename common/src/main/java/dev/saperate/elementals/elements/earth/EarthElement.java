@@ -5,6 +5,7 @@ import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
+import dev.saperate.elementals.elements.crystal.abilities.CrystalElement;
 import dev.saperate.elementals.elements.metal.MetalElement;
 import dev.saperate.elementals.misc.BlockRestoreManager;
 import net.minecraft.core.BlockPos;
@@ -25,8 +26,7 @@ import java.util.List;
 
 import static dev.saperate.elementals.Elementals.BENDING_GRIEFING;
 import static dev.saperate.elementals.entities.ElementalEntities.EARTHBLOCK;
-import static dev.saperate.elementals.misc.ElementalsCustomTags.EARTH_BENDABLE_BLOCKS;
-import static dev.saperate.elementals.misc.ElementalsCustomTags.METAL_BENDABLE_BLOCKS;
+import static dev.saperate.elementals.misc.ElementalsCustomTags.*;
 import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
 
 
@@ -192,7 +192,9 @@ public class EarthElement extends Element {
 
     //TODO check for netherite and ancient debris and make it more expensive
     public static boolean isBlockBendable(BlockState bState, Bender bender) {
-        return bState.is(EARTH_BENDABLE_BLOCKS) || (bender.hasElement(MetalElement.get()) && bState.is(METAL_BENDABLE_BLOCKS));
+        return bState.is(EARTH_BENDABLE_BLOCKS)
+                || (bender.hasElement(MetalElement.get()) && bState.is(METAL_BENDABLE_BLOCKS))
+                || (bender.hasElement(CrystalElement.get()) && bState.is(ORE_BLOCKS));
     }
 
     /**
