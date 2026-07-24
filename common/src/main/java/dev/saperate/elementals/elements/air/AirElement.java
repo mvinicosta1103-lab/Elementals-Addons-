@@ -97,7 +97,7 @@ public class AirElement extends Element {
         registerUpgradeKeybind("airSuffocate", 7);
         registerUpgradeKeybind("airSuction", 8);
         registerUpgradeKeybind("airBlade", 9);
-        registerUpgradeKeybind("airCompression", 3);
+        registerUpgradeKeybind("airCompression", 10);
     }
 
     public static Element get() {
