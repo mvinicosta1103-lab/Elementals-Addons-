@@ -67,6 +67,8 @@ public class ElementalsClient {
         new KeyAbility8();
         new KeyAbility9();
         new KeyAbility10();
+        new KeyAbility11();
+        new KeyAbility12();
         new GuiKey();
         new KeyCycleBending();
         new KeyToggleBlueFire();

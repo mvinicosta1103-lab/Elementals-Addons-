@@ -527,7 +527,10 @@
   "upgrade.elementals.airShield.description": " By rapidly spinning air around you, you can knock back any projectile or enemy coming your way.",
   "upgrade.elementals.airShield.use": " Use: %d + sneak",
   "upgrade.elementals.airShield.icon": "air_shield",
-
+  "upgrade.elementals.airCompression": "Compression",
+  "upgrade.elementals.airCompression.description": " Compress a burst of air into a single point until it violently detonates, dealing heavy damage in a wide radius.",
+  "upgrade.elementals.airCompression.use": " Use: %d",
+  "upgrade.elementals.airCompression.icon": "air_compression",
 
   "upgrade.elementals.airTornado": "Tornado",
   "upgrade.elementals.airTornado.description": " Create a powerful tornado that damages and sends your enemies in the sky.",

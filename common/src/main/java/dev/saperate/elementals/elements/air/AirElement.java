@@ -87,6 +87,7 @@ public class AirElement extends Element {
         addAbility(new AbilityAir4(), 3);
         addAbility(new AbilityAirSuction(), 8);
         addAbility(new AbilityAirBlade(), 9);
+        addAbility(new AbilityAirCompression(), 3);
 
         registerUpgradeKeybind("airShield", 4);
         registerUpgradeKeybind("airTornado", 5);
@@ -94,6 +95,7 @@ public class AirElement extends Element {
         registerUpgradeKeybind("airSuffocate", 7);
         registerUpgradeKeybind("airSuction", 8);
         registerUpgradeKeybind("airBlade", 9);
+        registerUpgradeKeybind("airCompression", 3);
     }
 
     public static Element get() {
