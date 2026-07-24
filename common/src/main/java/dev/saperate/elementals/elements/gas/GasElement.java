@@ -4,6 +4,7 @@ import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
+import dev.saperate.elementals.platform.Services;
 
 /**
  * Gas is a subbending of Air, in the same vein as Lightning is to Fire or Metal/Mud/Crystal are to Earth.
@@ -32,28 +33,48 @@ public class GasElement extends Element {
                         new Upgrade("gasJetSpeedI", new Upgrade[]{
                                 new Upgrade("gasJetSpeedII", 1)
                         }, 1),
-                        new Upgrade("gasJetEfficiencyI", 1)
+                        new Upgrade("gasJetEfficiencyI", 1),
+                        new Upgrade("gasJetFlare", new Upgrade[]{
+                                new Upgrade("gasJetFlareDamageI", 2)
+                        }, 3)
                 }, 2),
                 new Upgrade("vaporChoke", new Upgrade[]{
                         new Upgrade("vaporChokePotencyI", new Upgrade[]{
                                 new Upgrade("vaporChokePotencyII", 2)
                         }, 2),
                         new Upgrade("vaporChokeRangeI", 1)
-                }, 4)
+                }, 4),
+                new Upgrade("gasMask", new Upgrade[]{
+                        new Upgrade("gasMaskFireFilterI", 2)
+                }, 2),
+                new Upgrade("gasTrap", new Upgrade[]{
+                        new Upgrade("gasTrapRadiusI", 1),
+                        new Upgrade("gasTrapPotencyI", 2)
+                }, 3)
         });
 
         addAbility(new AbilityGasRelease(), 0);
         addAbility(new AbilityGasCloud(), 1);
         addAbility(new AbilityGasJet(), 2);
         addAbility(new AbilityVaporChoke(), 3);
+        addAbility(new AbilityGasMask(), 4);
+        addAbility(new AbilityGasTrap(), 5);
 
-        // gasIgnite has no key of its own - it's a combo (right-click) performed
-        // while AbilityGasCloud is your currAbility, so its tooltip points at Gas Cloud's key.
+        // gasIgnite and gasJetFlare don't have keys of their own - they're combos (right-click /
+        // left-click respectively) performed while their parent ability is still the currAbility,
+        // so their tooltips point at the parent ability's key.
         registerUpgradeKeybind("gasRelease", 0);
         registerUpgradeKeybind("gasCloud", 1);
         registerUpgradeKeybind("gasIgnite", 1);
         registerUpgradeKeybind("gasJet", 2);
+        registerUpgradeKeybind("gasJetFlare", 2);
         registerUpgradeKeybind("vaporChoke", 3);
+        registerUpgradeKeybind("gasMask", 4);
+        registerUpgradeKeybind("gasTrap", 5);
+
+        // Noxious Pocket traps aren't tied to any single Bender's currAbility (they linger after the
+        // caster walks away), so they're checked on the shared server tick instead - see GasTrapManager.
+        Services.EVENTS.onServerTick(GasTrapManager::tick);
     }
 
     public static Element get() {
@@ -84,8 +105,12 @@ public class GasElement extends Element {
                 && plrData.canUseUpgrade("gasIgniteDamageI")
                 && plrData.canUseUpgrade("gasJetSpeedII")
                 && plrData.canUseUpgrade("gasJetEfficiencyI")
+                && plrData.canUseUpgrade("gasJetFlareDamageI")
                 && plrData.canUseUpgrade("vaporChokePotencyII")
                 && plrData.canUseUpgrade("vaporChokeRangeI")
+                && plrData.canUseUpgrade("gasMaskFireFilterI")
+                && plrData.canUseUpgrade("gasTrapRadiusI")
+                && plrData.canUseUpgrade("gasTrapPotencyI")
                 ;
     }
 }
