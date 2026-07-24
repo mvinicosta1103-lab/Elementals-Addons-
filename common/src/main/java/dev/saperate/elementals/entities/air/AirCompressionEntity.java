@@ -69,7 +69,7 @@ public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
     private void onCollision() {
         FireExplosion explosion = new FireExplosion(
                 level(), this, getX(), getY(), getZ(),
-                EXPLOSION_RADIUS, false, Explosion.BlockInteraction.KEEP,
+                EXPLOSION_RADIUS, false, Explosion.BlockInteraction.DESTROY,
                 EXPLOSION_DAMAGE * ElementalConfig.get().BENDING_DAMAGE_MULTIPLIER,
                 1.4f, // knockback extra forte, é uma explosão de ar
                 getOwner()
