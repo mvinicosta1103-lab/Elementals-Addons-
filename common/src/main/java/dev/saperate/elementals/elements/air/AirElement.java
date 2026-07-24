@@ -89,7 +89,7 @@ public class AirElement extends Element {
         addAbility(new AbilityAir4(), 3);
         addAbility(new AbilityAirSuction(), 8);
         addAbility(new AbilityAirBlade(), 9);
-        addAbility(new AbilityAirCompression());
+        addAbility(new AbilityAirCompression(), 10);
 
         registerUpgradeKeybind("airShield", 4);
         registerUpgradeKeybind("airTornado", 5);

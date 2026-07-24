@@ -41,9 +41,18 @@ public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
     @Override
     public void tick() {
         super.tick();
-        if (random.nextInt(0, 6) == 0) {
-            summonParticles(this, random, ParticleTypes.CLOUD, 0.15f, 3);
-            playSound(WIND_SOUND_EVENT, 0.6f, 1.4f);
+
+        // rastro denso, todo tick, na posição atual (efeito de "risco no ar" de alta velocidade)
+        summonParticles(this, random, ParticleTypes.CLOUD, 0.05f, 2);
+
+        // partícula extra mais espalhada, com frequência menor, pra dar volume ao redor do núcleo
+        if (tickCount % 2 == 0) {
+            summonParticles(this, random, ParticleTypes.POOF, 0.12f, 1);
+        }
+
+        // som contínuo de vento, mais espaçado pra não ficar irritante
+        if (tickCount % 4 == 0) {
+            playSound(WIND_SOUND_EVENT, 0.5f, 1.6f);
         }
     }
 
