@@ -81,6 +81,9 @@ public class ElementalEntities {
     public static final Supplier<EntityType<AirScooterEntity>> AIRSCOOTER = Services.REGISTRY.registerEntity(
             "air_scooter", AirScooterEntity::new, 1, 1);
 
+    public static final Supplier<EntityType<AirCompressionEntity>> AIR_COMPRESSION = Services.REGISTRY.registerEntity(
+            "air_ball", AirCompressionEntity::new, 1, 1);
+
     //LIGHTNING
     public static final Supplier<EntityType<LightningArcEntity>> LIGHTNINGARC = Services.REGISTRY.registerEntity(
             "lightning_arc", LightningArcEntity::new, 0.25f, 0.25f);
