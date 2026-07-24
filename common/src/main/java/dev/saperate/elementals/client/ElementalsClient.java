@@ -142,6 +142,7 @@ public class ElementalsClient {
         Services.REGISTRY.registerClientEntityRenderer(AIRBULLET, AirBulletEntityRenderer::new);
         Services.REGISTRY.registerClientEntityRenderer(AIRBLADE, AirBladeEntityRenderer::new);
         Services.REGISTRY.registerClientEntityRenderer(AIRSCOOTER, AirScooterEntityRenderer::new);
+        Services.REGISTRY.registerClientEntityRenderer(AIR_COMPRESSION, AirCompressionEntityRenderer::new);
 
         //COMMON
         Services.REGISTRY.registerClientEntityRenderer(DECOYPLAYER, (context) -> new DecoyPlayerEntityRenderer(context, true));
