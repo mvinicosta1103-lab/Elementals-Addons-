@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -34,8 +35,14 @@ public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
         Vector3f pos = getEntityLookVector(owner, 1.5f).toVector3f();
         setPos(pos.x, pos.y, pos.z);
         maxLifeTime = 60; // ~3s de vida útil, evita atravessar o mapa infinito
-        // dispara direto na direção da mira do jogador
-        setDeltaMovement(owner, owner.getXRot(), owner.getYRot(), 0, SPEED, 0);
+    }
+
+    public AirCompressionEntity(Level world, Player owner, double x, double y, double z) {
+        super(AIR_COMPRESSION.get(), world, Player.class);
+        setOwner(owner);
+        setPos(x, y, z);
+        maxLifeTime = 60; // ~3s de vida útil depois de lançado, evita atravessar o mapa infinito
+        setControlled(true); // fica flutuando na frente do jogador, seguindo a mira, até o Left Click
     }
 
     @Override
@@ -54,6 +61,24 @@ public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
         if (tickCount % 4 == 0) {
             playSound(WIND_SOUND_EVENT, 0.5f, 1.6f);
         }
+
+        Entity owner = getOwner();
+        if (owner == null || isRemoved()) {
+            return;
+        }
+
+        if (!owner.isCrouching()) {
+            moveEntity();
+        }
+    }
+
+    private void moveEntity() {
+        if (getIsControlled()) {
+            // continua flutuando na frente do jogador, seguindo pra onde ele está mirando
+            moveEntityTowardsGoal(getEntityLookVector(getOwner(), 1.5f).toVector3f());
+        }
+
+        this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
     @Override
