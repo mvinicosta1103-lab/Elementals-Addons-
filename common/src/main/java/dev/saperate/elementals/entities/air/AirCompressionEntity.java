@@ -29,7 +29,8 @@ public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
     public AirCompressionEntity(Level world, Player owner) {
         super(AIR_COMPRESSION.get(), world, Player.class);
         setOwner(owner);
-        setPos(owner.getEyeX(), owner.getEyeY() - 0.2, owner.getEyeZ());
+        Vector3f pos = getEntityLookVector(owner, 1.5f).toVector3f();
+        setPos(pos.x, pos.y, pos.z);
         maxLifeTime = 60; // ~3s de vida útil, evita atravessar o mapa infinito
         // dispara direto na direção da mira do jogador
         setDeltaMovement(owner, owner.getXRot(), owner.getYRot(), 0, SPEED, 0);
