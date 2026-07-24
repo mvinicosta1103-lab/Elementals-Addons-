@@ -10,10 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 
 import static dev.saperate.elementals.entities.ElementalEntities.AIR_COMPRESSION; // registrar (ver abaixo)
 import static dev.saperate.elementals.misc.ElementalsSounds.WIND_BURST_SOUND_EVENT;
 import static dev.saperate.elementals.misc.ElementalsSounds.WIND_SOUND_EVENT;
+import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
 import static dev.saperate.elementals.utils.SapsUtils.summonParticles;
 
 public class AirCompressionEntity extends AbstractElementalsEntity<Player> {
