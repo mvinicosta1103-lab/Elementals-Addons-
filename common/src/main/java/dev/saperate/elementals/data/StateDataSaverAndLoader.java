@@ -38,7 +38,7 @@ public class StateDataSaverAndLoader extends SavedData {
             playerData.activeElementIndex = nbt.getInt("elementIndex");
 
             Element element = playerData.getElement();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 12; i++) {
                 String bindTag = "bind" + (i + 1);
                 playerData.boundAbilities[i] = nbt.contains(bindTag)
                         ? element.getBindableAbility(nbt.getInt(bindTag))
@@ -107,6 +107,8 @@ public class StateDataSaverAndLoader extends SavedData {
             playerNbt.putInt("bind8", playerData.getElement().bindableAbilities.indexOf(playerData.boundAbilities[7]));
             playerNbt.putInt("bind9", playerData.getElement().bindableAbilities.indexOf(playerData.boundAbilities[8]));
             playerNbt.putInt("bind10", playerData.getElement().bindableAbilities.indexOf(playerData.boundAbilities[9]));
+            playerNbt.putInt("bind11", playerData.getElement().bindableAbilities.indexOf(playerData.boundAbilities[10]));
+            playerNbt.putInt("bind12", playerData.getElement().bindableAbilities.indexOf(playerData.boundAbilities[11]));
 
 
             CompoundTag upgradesNbt = new CompoundTag();
