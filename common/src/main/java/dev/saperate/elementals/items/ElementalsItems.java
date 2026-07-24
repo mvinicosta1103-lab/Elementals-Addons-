@@ -81,12 +81,6 @@ public class ElementalsItems {
     public static final Supplier<MetalScrollItem> METAL_SCROLL_ITEM = registerItem("metal_scroll",
             () -> new MetalScrollItem(new Item.Properties()
                     .stacksTo(1)));
-    public static final Supplier<MudScrollItem> MUD_SCROLL_ITEM = registerItem("mud_scroll",
-            () -> new MudScrollItem(new Item.Properties()
-                    .stacksTo(1)));
-    public static final Supplier<CrystalScrollItem> CRYSTAL_SCROLL_ITEM = registerItem("crystal_scroll",
-            () -> new CrystalScrollItem(new Item.Properties()
-                    .stacksTo(1)));
     public static final Supplier<DirtBottleItem> DIRT_BOTTLE_ITEM = registerItem("dirt_bottle",
             () -> new DirtBottleItem(new Item.Properties()
                     .stacksTo(1)));

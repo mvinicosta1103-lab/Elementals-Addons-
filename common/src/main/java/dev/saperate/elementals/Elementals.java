@@ -11,14 +11,10 @@ import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.NoneElement;
 import dev.saperate.elementals.elements.air.AirElement;
 import dev.saperate.elementals.elements.blood.BloodElement;
-import dev.saperate.elementals.elements.crystal.abilities.CrystalElement;
 import dev.saperate.elementals.elements.earth.EarthElement;
 import dev.saperate.elementals.elements.fire.FireElement;
-import dev.saperate.elementals.elements.gas.GasElement;
 import dev.saperate.elementals.elements.lightning.LightningElement;
 import dev.saperate.elementals.elements.metal.MetalElement;
-import dev.saperate.elementals.elements.mud.abilities.MudElement;
-import dev.saperate.elementals.elements.plant.PlantElement;
 import dev.saperate.elementals.elements.water.WaterElement;
 import dev.saperate.elementals.enchantments.ElementalsEnchantments;
 import dev.saperate.elementals.entities.ElementalEntities;
@@ -91,10 +87,6 @@ public class Elementals {
         new LightningElement();
         new BloodElement();
         new MetalElement();
-        new MudElement();
-        new CrystalElement();
-        new PlantElement();
-        new GasElement();
     }
 
     public static void onPlayerJoin(ServerPlayer player) {

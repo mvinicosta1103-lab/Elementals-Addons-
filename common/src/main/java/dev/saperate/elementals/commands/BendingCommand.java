@@ -10,13 +10,6 @@ import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.data.StateDataSaverAndLoader;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
-import dev.saperate.elementals.elements.air.AirElement;
-import dev.saperate.elementals.elements.crystal.abilities.CrystalElement;
-import dev.saperate.elementals.elements.earth.EarthElement;
-import dev.saperate.elementals.elements.gas.GasElement;
-import dev.saperate.elementals.elements.mud.abilities.MudElement;
-import dev.saperate.elementals.elements.plant.PlantElement;
-import dev.saperate.elementals.elements.water.WaterElement;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -153,17 +146,9 @@ public class BendingCommand {
      * so /bending element add can't be used to bypass that restriction.
      */
     private static Element getRequiredParentElement(Element element) {
-        if (element instanceof MudElement || element instanceof CrystalElement) {
-            return EarthElement.get();
-        }
-        if (element instanceof PlantElement) {
-            return WaterElement.get();
-        }
-        if (element instanceof GasElement) {
-            return AirElement.get();
-        }
         return null;
     }
+
 
     public static int addElement(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         if (EntityArgument.getPlayer(context, "player").level().isClientSide) {

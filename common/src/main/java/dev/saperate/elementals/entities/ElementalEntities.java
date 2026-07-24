@@ -14,7 +14,6 @@ import dev.saperate.elementals.entities.metal.MetalBindEntity;
 import dev.saperate.elementals.entities.metal.MetalBulletEntity;
 import dev.saperate.elementals.entities.metal.MetalCableEntity;
 import dev.saperate.elementals.entities.metal.MetalLanceEntity;
-import dev.saperate.elementals.entities.mud.MudBallEntity;
 import dev.saperate.elementals.entities.water.*;
 import dev.saperate.elementals.platform.Services;
 import net.minecraft.world.entity.EntityType;
@@ -113,8 +112,7 @@ public class ElementalEntities {
             "boomerang", BoomerangEntity::new, .6f, .2f);
     public static final Supplier<EntityType<SkyBisonEntity>> SKYBISON = Services.REGISTRY.registerEntity(
             "sky_bison", SkyBisonEntity::new, 3.25f, 3.25f);
-    public static final Supplier<EntityType<MudBallEntity>> MUDBALL = Services.REGISTRY.registerEntity(
-            "mud_ball", MudBallEntity::new, 1, 1);
+
 
     public static void register() {
         Services.REGISTRY.registerDefaultEntityAttribute(DECOYPLAYER, DecoyPlayerEntity::createMobAttributes);
