@@ -121,7 +121,7 @@ public class AbilityGasCloud implements Ability {
         AABB area = new AABB(state.origin, state.origin).inflate(state.maxRadius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
                 e -> e != bender.player)) {
-            target.setSecondsOnFire(4);
+            target.igniteForSeconds(4.0f);
             target.hurt(bender.player.damageSources().onFire(), damage);
         }
 
