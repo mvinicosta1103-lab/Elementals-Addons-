@@ -42,7 +42,8 @@ public class AirElement extends Element {
                                 new Upgrade("airBlade", new Upgrade[]{
                                         new Upgrade("airBladeRangeI", 1),
                                         new Upgrade("airBladeDamageI", 1)
-                                }, 2)
+                                }, 2),
+                                new Upgrade("airCompression", 2)
                         }, true, 1),
                         new Upgrade("airStreamSpeedI", new Upgrade[]{
                                 new Upgrade("airStreamSpeedII", new Upgrade[]{
@@ -71,6 +72,7 @@ public class AirElement extends Element {
                                 }, 1)
                         }, 1)
                 }, 4)
+
         });
         addAbility(new AbilityAir1(), 0);
         addAbility(new AbilityAirGust());
@@ -87,7 +89,7 @@ public class AirElement extends Element {
         addAbility(new AbilityAir4(), 3);
         addAbility(new AbilityAirSuction(), 8);
         addAbility(new AbilityAirBlade(), 9);
-        addAbility(new AbilityAirCompression(), 3);
+        addAbility(new AbilityAirCompression());
 
         registerUpgradeKeybind("airShield", 4);
         registerUpgradeKeybind("airTornado", 5);
