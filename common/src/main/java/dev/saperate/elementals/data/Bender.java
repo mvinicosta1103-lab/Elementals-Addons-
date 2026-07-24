@@ -313,7 +313,6 @@ public class Bender {
 
     public void bindDefaultAbilities() {
         clearBindings();
-
         int abilitySize = plrData.elements.get(plrData.activeElementIndex).bindableAbilities.size();
         for (int i = 0; i < Ability.MAX_KEYBINDS; i++) {
             if (i < abilitySize) {
