@@ -12,7 +12,7 @@ public interface Ability {
      * Bump this (and add the matching KeyAbilityN classes + register them in ElementalsClient.init())
      * whenever more simultaneous keybinds are needed.
      */
-    int MAX_KEYBINDS = 10;
+    int MAX_KEYBINDS = 12;
 
     void onCall(Bender bender, long deltaT);
 
