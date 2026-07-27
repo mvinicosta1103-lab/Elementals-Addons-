@@ -4,9 +4,6 @@ import dev.saperate.elementals.data.ElementalConfig;
 import dev.saperate.elementals.elements.water.WaterElement;
 import dev.saperate.elementals.entities.common.AbstractElementalsEntity;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-
 
 import static dev.saperate.elementals.Elementals.BENDING_GRIEFING;
 import static dev.saperate.elementals.entities.ElementalEntities.WATERCUBE;
@@ -24,7 +20,7 @@ import static dev.saperate.elementals.utils.SapsUtils.summonParticles;
 public class WaterCubeEntity extends AbstractElementalsEntity<Player> {
     //We don't need to sync this with the client, since it's only used on the server when we check if we can place water
     public boolean wasThrown = false;
-    
+
     public WaterCubeEntity(EntityType<WaterCubeEntity> type, Level world) {
         super(type, world, Player.class);
     }
@@ -76,14 +72,14 @@ public class WaterCubeEntity extends AbstractElementalsEntity<Player> {
     @Override
     public void collidesWithGround() {
         if (level().getGameRules().getBoolean(BENDING_GRIEFING) || !wasThrown) {
-            WaterElement.placeWater(getOnPos(), level());
+            WaterElement.placeWater(getOnPos().above(), level());
         }
         discard();
     }
 
     @Override
     public void onHitEntity(Entity entity) {
-        entity.hurt(this.damageSources().playerAttack((Player) getOwner()), 6 * ElementalConfig.get().BENDING_DAMAGE_MULTIPLIER);
+        entity.hurt(this.damageSources().playerAttack(getOwner()), 6 * ElementalConfig.get().BENDING_DAMAGE_MULTIPLIER);
         entity.addDeltaMovement(this.getDeltaMovement().scale(1.25));
         discard();
     }
