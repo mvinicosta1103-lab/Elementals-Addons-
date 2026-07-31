@@ -4,8 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import dev.saperate.elementals.client.entities.models.earth.GiantSpikeModel;
 import dev.saperate.elementals.client.entities.models.earth.ShrapnelModel;
 import dev.saperate.elementals.client.entities.models.earth.SpikeModel;
+import dev.saperate.elementals.client.entities.models.earth.TrailMoundModel;
 import dev.saperate.elementals.entities.earth.EarthBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -54,6 +56,26 @@ public class EarthBlockEntityRenderer extends EntityRenderer<EarthBlockEntity> {
                 matrices.translate(0.25f, 0, -0.25f);
 
                 SpikeModel.getTexturedModelData().bakeRoot().render(
+                        matrices, vertexConsumer, light, 0, 0xFFFFFFFF);
+            }
+            case 3 -> {
+                //Small trail mound left behind by Earth Punch's homing trail
+                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.itemEntityTranslucentCull(getTextureLocation(entity)));
+
+                matrices.translate(0.5, 0, 0.5);
+
+                TrailMoundModel.getTexturedModelData().bakeRoot().render(
+                        matrices, vertexConsumer, light, 0, 0xFFFFFFFF);
+            }
+            case 4 -> {
+                //Giant spike eruption at the end of Earth Punch
+                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.itemEntityTranslucentCull(getTextureLocation(entity)));
+
+                matrices.mulPose(Axis.XP.rotationDegrees(180));
+                matrices.scale(3.5f, 3.5f, 3.5f);
+                matrices.translate(0.25f, 0, -0.25f);
+
+                GiantSpikeModel.getTexturedModelData().bakeRoot().render(
                         matrices, vertexConsumer, light, 0, 0xFFFFFFFF);
             }
             default -> {

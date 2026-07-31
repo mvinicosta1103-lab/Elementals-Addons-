@@ -98,7 +98,13 @@ public class EarthElement extends Element {
                                         new Upgrade("earthArmor", 2)
                                 }, 2)
                         }, 1)
-                }, 3)
+                }, 3),
+                new Upgrade("earthPunch", new Upgrade[]{
+                        new Upgrade("earthPunchDamageI", 1)
+                }, 2),
+                new Upgrade("earthKick", new Upgrade[]{
+                        new Upgrade("earthKickDamageI", 1)
+                }, 2)
         });
         addAbility(new AbilityEarth1(), true);
         addAbility(new AbilityEarthBlockPickup());
@@ -116,6 +122,8 @@ public class EarthElement extends Element {
         addAbility(new AbilityEarthSpikes(), true);
         addAbility(new AbilityEarthSurf(), 8);
         addAbility(new AbilityEarthBoulder(), 9);
+        addAbility(new AbilityEarthPunch(), 10);
+        addAbility(new AbilityEarthKick(), 11);
 
         registerUpgradeKeybind("earthWall", 4);
         registerUpgradeKeybind("earthChunk", 5);
@@ -123,6 +131,8 @@ public class EarthElement extends Element {
         registerUpgradeKeybind("earthSpikes", 7);
         registerUpgradeKeybind("earthSurf", 8);
         registerUpgradeKeybind("earthBoulder", 9);
+        registerUpgradeKeybind("earthPunch", 10);
+        registerUpgradeKeybind("earthKick", 11);
     }
 
     public static Element get() {
