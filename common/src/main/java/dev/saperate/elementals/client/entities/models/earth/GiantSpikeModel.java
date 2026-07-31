@@ -8,6 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
+/**
+ * A cluster of jagged blade-shaped spikes erupting out of broken ground, built from the same
+ * thin-blade-fan pattern as {@link SpikeModel} (already proven in Earth Spikes / Earth Trap) instead
+ * of a single smooth mound, so it reads as a burst of rock rather than a rounded lump.
+ */
 public class GiantSpikeModel extends EntityModel<EarthBlockEntity> {
     private final ModelPart bb_main;
 
@@ -20,24 +25,47 @@ public class GiantSpikeModel extends EntityModel<EarthBlockEntity> {
         PartDefinition modelPartData = modelData.getRoot();
         PartDefinition bb_main = modelPartData.addOrReplaceChild("bb_main", CubeListBuilder.create(), PartPose.rotation(0.0F, 24.0F, 0.0F));
 
-        //Tall central spike, the main point jutting out of the rock mass (like the tip in the reference photo)
-        PartDefinition cube_r1 = bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().addBox(-3.0F, -5.0F, -16.0F, 6.0F, 6.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.0F, 2.0F, 1.8326F, 0.0F, 0.0F));
+        //Central cluster: the tall main fan of blades, same shape family as SpikeModel but scaled up
+        addBladeFan(bb_main, "main", 0.0F, -10.0F, 0.0F, 5.0F, 5.0F, 14.0F, 1.0F);
 
-        //Secondary spikes surrounding the main one, at different angles/lengths so the cluster reads as jagged rock instead of a single cone
-        PartDefinition cube_r2 = bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().addBox(-2.5F, -4.0F, -13.0F, 5.0F, 5.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, -4.0F, 0.0F, 1.5708F, 0.3927F, 0.0F));
-
-        PartDefinition cube_r3 = bb_main.addOrReplaceChild("cube_r3", CubeListBuilder.create().addBox(-2.5F, -4.0F, -13.0F, 5.0F, 5.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0F, -4.0F, 0.0F, 1.5708F, -0.3927F, 0.0F));
-
-        PartDefinition cube_r4 = bb_main.addOrReplaceChild("cube_r4", CubeListBuilder.create().addBox(-2.0F, -3.0F, -10.0F, 4.0F, 4.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, -3.0F, 3.0F, 1.309F, 0.7854F, 0.0F));
-
-        PartDefinition cube_r5 = bb_main.addOrReplaceChild("cube_r5", CubeListBuilder.create().addBox(-2.0F, -3.0F, -10.0F, 4.0F, 4.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, -3.0F, 3.0F, 1.309F, -0.7854F, 0.0F));
-
-        PartDefinition cube_r6 = bb_main.addOrReplaceChild("cube_r6", CubeListBuilder.create().addBox(-2.0F, -3.0F, -9.0F, 4.0F, 4.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -3.0F, -4.0F, 1.5708F, 3.1416F, 0.0F));
-
-        //Rocky base mound at the bottom, so the spikes look like they are erupting from broken earth rather than floating
-        PartDefinition base = bb_main.addOrReplaceChild("base", CubeListBuilder.create().addBox(-6.0F, -3.0F, -6.0F, 12.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        //Two smaller satellite clusters offset around the main one, so the eruption reads as several
+        //spikes breaking through the ground together (matches the reference image's spread-out spikes)
+        //instead of one central shape
+        addBladeFan(bb_main, "side1", 6.0F, -6.0F, 4.0F, 3.5F, 3.5F, 10.0F, 0.7F);
+        addBladeFan(bb_main, "side2", -6.0F, -6.0F, -3.0F, 3.5F, 3.5F, 10.0F, 0.7F);
+        addBladeFan(bb_main, "side3", -2.0F, -5.0F, 6.0F, 2.5F, 2.5F, 7.0F, 0.5F);
 
         return LayerDefinition.create(modelData, 32, 32);
+    }
+
+    /**
+     * Builds a 5-blade fan converging on a shared pivot point, mirroring SpikeModel's proven
+     * geometry so every cluster in this model reads as a clean spike rather than a blob.
+     * {@code scale} shrinks the whole fan uniformly so satellite clusters read as smaller than the
+     * central one.
+     */
+    private static void addBladeFan(PartDefinition parent, String name, float px, float py, float pz,
+                                    float w, float h, float len, float scale) {
+        PartDefinition fan = parent.addOrReplaceChild(name, CubeListBuilder.create(), PartPose.offset(px, py, pz));
+
+        w *= scale;
+        h *= scale;
+        len *= scale;
+        float halfW = w / 2f;
+        float[][] rotations = {
+                {1.8326F, 0.0F, 0.0F},
+                {1.309F, 0.0F, 0.0F},
+                {1.5708F, 0.0F, -0.2618F},
+                {1.5708F, 0.0F, 0.2618F},
+                {1.5708F, 0.0F, 0.0F}
+        };
+
+        for (int i = 0; i < rotations.length; i++) {
+            float[] rot = rotations[i];
+            fan.addOrReplaceChild(name + "_blade" + i,
+                    CubeListBuilder.create().addBox(-halfW, -h / 2f, -len, w, h, len, new CubeDeformation(0.0F)),
+                    PartPose.offsetAndRotation(0.0F, -h, 1.0F, rot[0], rot[1], rot[2]));
+        }
     }
 
     @Override

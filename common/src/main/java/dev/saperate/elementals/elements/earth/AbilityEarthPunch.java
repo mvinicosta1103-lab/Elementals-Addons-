@@ -117,8 +117,9 @@ public class AbilityEarthPunch implements Ability {
                 (float) groundY,
                 (float) target.getZ()));
 
-        //Leave a small mound of pushed-up earth behind it every few ticks
-        if (age % 3 == 0 && underTrail != null) {
+        //Leave a small cracked shard of earth behind it every tick so the trail reads as a continuous
+        //line tearing across the ground rather than a few scattered dots
+        if (underTrail != null) {
             spawnTrailMound(player, underTrail);
         }
 
@@ -147,7 +148,7 @@ public class AbilityEarthPunch implements Ability {
         mound.setDrops(false);
         mound.setControlled(true); //exempt from gravity; anchored to its own spawn point below
         mound.setTargetPosition(mound.position().toVector3f());
-        mound.maxLifeTime = 15;
+        mound.maxLifeTime = 40; //stays up long enough for several shards to overlap into a visible line
         player.level().addFreshEntity(mound);
     }
 
@@ -171,7 +172,7 @@ public class AbilityEarthPunch implements Ability {
         spike.setDrops(false);
         spike.setControlled(true); //exempt from gravity; anchored to its own spawn point below
         spike.setTargetPosition(spike.position().toVector3f());
-        spike.maxLifeTime = 30;
+        spike.maxLifeTime = 50; //stays up a bit after finishing its rise-up animation before crumbling
         player.level().addFreshEntity(spike);
 
         float damage = plrData.canUseUpgrade("earthPunchDamageI") ? 16f : 12f;

@@ -59,10 +59,15 @@ public class EarthBlockEntityRenderer extends EntityRenderer<EarthBlockEntity> {
                         matrices, vertexConsumer, light, 0, 0xFFFFFFFF);
             }
             case 3 -> {
-                //Small trail mound left behind by Earth Punch's homing trail
+                //Small trail shard left behind by Earth Punch's homing trail
                 VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.itemEntityTranslucentCull(getTextureLocation(entity)));
 
                 matrices.translate(0.5, 0, 0.5);
+                //Cracks upward out of the ground over its first few ticks instead of popping in at full size
+                float shardGrowth = Math.min(1f, (entity.lifeTime + tickDelta) / 4f);
+                matrices.scale(shardGrowth, shardGrowth, shardGrowth);
+                //Each shard gets its own rotation so a line of them reads as broken, jagged ground
+                matrices.mulPose(Axis.YP.rotationDegrees(entity.getId() * 47f % 360f));
 
                 TrailMoundModel.getTexturedModelData().bakeRoot().render(
                         matrices, vertexConsumer, light, 0, 0xFFFFFFFF);
@@ -72,8 +77,11 @@ public class EarthBlockEntityRenderer extends EntityRenderer<EarthBlockEntity> {
                 VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.itemEntityTranslucentCull(getTextureLocation(entity)));
 
                 matrices.mulPose(Axis.XP.rotationDegrees(180));
-                matrices.scale(3.5f, 3.5f, 3.5f);
+                //Bursts up out of the ground over its first half-second instead of appearing at full size instantly
+                float spikeGrowth = Math.min(1f, (entity.lifeTime + tickDelta) / 8f);
+                matrices.scale(3.5f * spikeGrowth, 3.5f * spikeGrowth, 3.5f * spikeGrowth);
                 matrices.translate(0.25f, 0, -0.25f);
+                matrices.mulPose(Axis.YP.rotationDegrees(entity.getId() * 29f % 360f));
 
                 GiantSpikeModel.getTexturedModelData().bakeRoot().render(
                         matrices, vertexConsumer, light, 0, 0xFFFFFFFF);

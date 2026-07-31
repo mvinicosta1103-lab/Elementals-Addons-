@@ -8,6 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
+/**
+ * A small jagged shard of earth cracking upward, left behind along Earth Punch's homing trail.
+ * Uses the same thin-blade shape family as {@link SpikeModel} instead of a rounded dirt clump, so a
+ * line of these reads as the ground tearing open rather than a smear of mud.
+ */
 public class TrailMoundModel extends EntityModel<EarthBlockEntity> {
     private final ModelPart bb_main;
 
@@ -20,16 +25,17 @@ public class TrailMoundModel extends EntityModel<EarthBlockEntity> {
         PartDefinition modelPartData = modelData.getRoot();
         PartDefinition bb_main = modelPartData.addOrReplaceChild("bb_main", CubeListBuilder.create(), PartPose.rotation(0.0F, 24.0F, 0.0F));
 
-        //Wide flat base clump of dirt pushed up out of the ground
-        PartDefinition base = bb_main.addOrReplaceChild("base", CubeListBuilder.create().addBox(-4.0F, -2.0F, -4.0F, 8.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        //Main shard, leaning up out of the ground
+        bb_main.addOrReplaceChild("shard1", CubeListBuilder.create().addBox(-1.5F, -1.5F, -7.0F, 3.0F, 3.0F, 7.0F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 1.8326F, 0.0F, 0.0F));
 
-        //Smaller stacked layer to give the mound some height
-        PartDefinition mid = bb_main.addOrReplaceChild("mid", CubeListBuilder.create().addBox(-2.5F, -2.0F, -2.5F, 5.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, -2.0F, -0.5F));
+        //Two smaller cracked shards beside it, angled outward so the mound reads as broken rock
+        //instead of a single smooth cone
+        bb_main.addOrReplaceChild("shard2", CubeListBuilder.create().addBox(-1.0F, -1.0F, -4.5F, 2.0F, 2.0F, 4.5F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(1.5F, -2.0F, 1.0F, 1.7017F, 0.5236F, 0.0F));
 
-        //A couple of tiny clumps offset to the side so the mound reads as rough/organic rather than a perfect box
-        PartDefinition clump1 = bb_main.addOrReplaceChild("clump1", CubeListBuilder.create().addBox(-1.5F, -1.5F, -1.5F, 3.0F, 1.5F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.5F, -3.5F, 1.0F, 0.0F, 0.3927F, 0.0F));
-
-        PartDefinition clump2 = bb_main.addOrReplaceChild("clump2", CubeListBuilder.create().addBox(-1.0F, -1.0F, -1.0F, 2.0F, 1.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, -1.0F, 2.0F, 0.0F, -0.5236F, 0.0F));
+        bb_main.addOrReplaceChild("shard3", CubeListBuilder.create().addBox(-1.0F, -1.0F, -3.5F, 2.0F, 2.0F, 3.5F, new CubeDeformation(0.0F)),
+                PartPose.offsetAndRotation(-1.5F, -1.5F, -0.5F, 1.7017F, -0.6981F, 0.0F));
 
         return LayerDefinition.create(modelData, 16, 16);
     }
