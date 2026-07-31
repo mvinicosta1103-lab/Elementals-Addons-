@@ -61,9 +61,9 @@ public abstract class GlowMixin {
         MobEffectInstance instance = player.getEffect(ElementalsStatusEffects.SEISMIC_SENSE.get());
         int rangeTier = instance == null ? 0 : SeismicSenseStatusEffect.getRangeTier(instance.getAmplifier());
         return switch (rangeTier) {
-            case 2 -> 100;
-            case 1 -> 75;
-            default -> 50;
+            case 2 -> 500;
+            case 1 -> 250;
+            default -> 100;
         };
     }
 
