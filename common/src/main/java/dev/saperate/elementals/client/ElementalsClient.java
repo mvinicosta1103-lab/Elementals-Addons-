@@ -22,6 +22,7 @@ import dev.saperate.elementals.client.entities.models.water.WaterBladeModel;
 import dev.saperate.elementals.client.entities.water.*;
 import dev.saperate.elementals.client.features.MetalArmorRenderer;
 import dev.saperate.elementals.client.gui.CastTimerHudOverlay;
+import dev.saperate.elementals.client.gui.ChiHudOverlay;
 import dev.saperate.elementals.client.items.GliderItemRenderer;
 import dev.saperate.elementals.client.keys.KeyCycleBending;
 import dev.saperate.elementals.client.keys.KeyToggleBlueFire;
@@ -75,7 +76,8 @@ public class ElementalsClient {
 
         Services.REGISTRY.registerClientOverlay(
                 ResourceLocation.fromNamespaceAndPath(MODID, "cast_timer"), new CastTimerHudOverlay());
-        // ChiBar disabled: no longer registering the Chi HUD overlay.
+        Services.REGISTRY.registerClientOverlay(
+                ResourceLocation.fromNamespaceAndPath(MODID, "chi_hud"), new ChiHudOverlay());
 
         Services.REGISTRY.registerClientParticles();
         Services.REGISTRY.registerClientColorProviders();
