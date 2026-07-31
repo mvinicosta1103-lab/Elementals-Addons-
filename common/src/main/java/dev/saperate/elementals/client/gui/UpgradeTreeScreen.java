@@ -218,8 +218,7 @@ public class UpgradeTreeScreen extends Screen {
             SapsUtils.addTranslatableAutomaticLineBreaks(tooltip, "upgrade.elementals." + upgradeName + ".description", 5);
 
 
-
-            SapsUtils.addTranslatableAutomaticLineBreaks(tooltip, "upgrade.elementals." + upgradeName + ".use", 6, getKeyName());
+            SapsUtils.addTranslatableAutomaticLineBreaks(tooltip, "upgrade.elementals." + upgradeName + ".use", 6, getKeyName(), getKeyName());
 
             if (hoveredUpgrade.price > 0) {
                 SapsUtils.addTranslatableAutomaticLineBreaks(tooltip, "upgrade.elementals.price", 6, hoveredUpgrade.price);

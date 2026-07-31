@@ -97,14 +97,14 @@ public class EarthElement extends Element {
                                         }, 1),
                                         new Upgrade("earthArmor", 2)
                                 }, 2)
-                        }, 1)
-                }, 3),
-                new Upgrade("earthPunch", new Upgrade[]{
-                        new Upgrade("earthPunchDamageI", 1)
-                }, 2),
-                new Upgrade("earthKick", new Upgrade[]{
-                        new Upgrade("earthKickDamageI", 1)
-                }, 2)
+                        }, 1),
+                        new Upgrade("earthPunch", new Upgrade[]{
+                                new Upgrade("earthPunchDamageI", 1)
+                        }, 2),
+                        new Upgrade("earthKick", new Upgrade[]{
+                                new Upgrade("earthKickDamageI", 1)
+                        }, 2)
+                }, 3)
         });
         addAbility(new AbilityEarth1(), true);
         addAbility(new AbilityEarthBlockPickup());
