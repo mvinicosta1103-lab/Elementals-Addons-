@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 public class AbilityAirScooter implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -42,7 +42,7 @@ public class AbilityAirScooter implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(0.1f) || ((AirScooterEntity)bender.abilityData).isRemoved() ) {
+        if (!bender.reduceChi(this, 0.1f) || ((AirScooterEntity) bender.abilityData).isRemoved()) {
             bender.setCurrAbility(null);
         }
     }

@@ -1,7 +1,6 @@
 package dev.saperate.elementals.elements.blood;
 
 import dev.saperate.elementals.data.Bender;
-import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.Ability;
 import dev.saperate.elementals.utils.SapsUtils;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
-
 
 
 public class AbilityBlood4 implements Ability {
@@ -24,7 +22,7 @@ public class AbilityBlood4 implements Ability {
         } else if (bender.getData().canUseUpgrade("bloodParalysisEfficiencyI")) {
             cost = 35;
         }
-        if (deltaT < 1500 || !bender.reduceChi(cost)) {
+        if (deltaT < 1500 || !bender.reduceChi(this, cost)) {
             return;
         }
         Player player = bender.player;

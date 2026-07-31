@@ -21,7 +21,7 @@ public class AbilityBloodShot implements Ability {
             cost = 15;
         }
 
-        if (!bender.reduceChi(cost)) {
+        if (!bender.reduceChi(this, cost)) {
             bender.setCurrAbility(null);
             return;
         }

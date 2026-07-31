@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import static dev.saperate.elementals.utils.SapsUtils.*;
+import static dev.saperate.elementals.utils.SapsUtils.raycastBlockCustomRotation;
 
 public class AbilityWaterTower implements Ability {
 
@@ -17,7 +17,7 @@ public class AbilityWaterTower implements Ability {
     //TODO could be useful for more intuitive uncast
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(15)) {
+        if (!bender.reduceChi(this, 15)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -57,7 +57,7 @@ public class AbilityWaterTower implements Ability {
 
     @Override
     public void onBackgroundTick(Bender bender, Object data) {
-        if (!bender.reduceChi(0.15f)) {
+        if (!bender.reduceChi(this, 0.15f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

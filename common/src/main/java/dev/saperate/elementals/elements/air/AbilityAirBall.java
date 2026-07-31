@@ -12,7 +12,7 @@ import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
 public class AbilityAirBall implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(20)) {
+        if (!bender.reduceChi(this, 20)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -31,7 +31,7 @@ public class AbilityFireIgnite implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(2.5f)) {
+        if (!bender.reduceChi(this, 2.5f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

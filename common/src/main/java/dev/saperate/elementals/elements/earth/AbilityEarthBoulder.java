@@ -50,7 +50,7 @@ public class AbilityEarthBoulder implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(20)) {
+        if (!bender.reduceChi(this, 20)) {
             bender.setCurrAbility(null);
             return;
         }

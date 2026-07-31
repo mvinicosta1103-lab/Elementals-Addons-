@@ -6,8 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 
-import static dev.saperate.elementals.Elementals.BENDING_GRIEFING;
-
 public class AbilityEarthMine implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
@@ -22,7 +20,7 @@ public class AbilityEarthMine implements Ability {
         }
         float dS = Math.min(4, (float) deltaT / 1000);
 
-        if (!bender.reduceChi(1.5f * (deltaT > 500 ? dS * dS : 1 ))) {
+        if (!bender.reduceChi(this, 1.5f * (deltaT > 500 ? dS * dS : 1))) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

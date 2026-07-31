@@ -3,15 +3,11 @@ package dev.saperate.elementals.elements.water;
 import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.elements.Ability;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Vector3f;
-
-import java.util.Random;
 
 import static dev.saperate.elementals.utils.SapsUtils.getEntityLookVector;
 import static dev.saperate.elementals.utils.SapsUtils.serverSummonParticles;
@@ -31,7 +27,7 @@ public class AbilityWaterSurf implements Ability {
 
     @Override
     public void onTick(Bender bender) {
-        if (!bender.reduceChi(0.25f)) {
+        if (!bender.reduceChi(this, 0.25f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -32,7 +32,7 @@ public class AbilityBloodControl implements Ability {
         );
 
         LivingEntity living = (LivingEntity) SapsUtils.entityFromHitResult(hit);
-        if (living != null && bender.reduceChi(25)) {
+        if (living != null && bender.reduceChi(this, 25)) {
 
             bender.setCurrAbility(this);
             setAbilityData(bender,living,10);
@@ -84,7 +84,7 @@ public class AbilityBloodControl implements Ability {
 
     @Override
     public void onTick(Bender bender) {
-        if (!bender.reduceChi(0.25f)) {
+        if (!bender.reduceChi(this, 0.25f)) {
             bender.setCurrAbility(null);
             return;
         }

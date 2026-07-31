@@ -43,7 +43,7 @@ public class AbilityEarthArmor implements Ability {
         if (!EarthElement.isBlockBendable(player.level().getBlockState(hit.getBlockPos()), bender) || !player.onGround()) {
             return;
         }
-        if (!bender.reduceChi(30)) {
+        if (!bender.reduceChi(this, 30)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

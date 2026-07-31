@@ -7,13 +7,14 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
-import static dev.saperate.elementals.utils.SapsUtils.*;
+import static dev.saperate.elementals.utils.SapsUtils.launchEntity;
+import static dev.saperate.elementals.utils.SapsUtils.serverSummonParticles;
 
 public class AbilityAirJump implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -36,7 +36,7 @@ public class AbilityWaterRiptide implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(18)) {
+        if (!bender.reduceChi(this, 18)) {
             bender.setCurrAbility(null);
             return;
         }

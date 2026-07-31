@@ -14,7 +14,7 @@ import static dev.saperate.elementals.Elementals.LIGHTNING_PARTICLE_TYPE;
 public class AbilityLightningEMP implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {//TODO FIX FOR NPCS THX MO
-        if (!bender.reduceChi(15)) {
+        if (!bender.reduceChi(this, 15)) {
             return;
         }
         bender.setCurrAbility(null);

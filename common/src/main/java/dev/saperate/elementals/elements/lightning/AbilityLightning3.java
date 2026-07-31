@@ -29,7 +29,7 @@ public class AbilityLightning3 implements Ability {
             duration = 600;
         }
         if (!safeHasStatusEffect(ElementalsStatusEffects.OVERCHARGED.get(), player) && !safeHasStatusEffect(ElementalsStatusEffects.BURNOUT.get(), player) ) {
-            if (!bender.reduceChi(15)) {
+            if (!bender.reduceChi(this, 15)) {
                 return;
             }
             player.addEffect(new MobEffectInstance(ElementalsStatusEffects.OVERCHARGED.get(), duration, 0, false, false, true));

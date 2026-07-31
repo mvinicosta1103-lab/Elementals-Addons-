@@ -27,7 +27,7 @@ public class AbilityLightningBolt implements Ability {
         } else if (plrData.canUseUpgrade("lightningBoltEfficiencyI")) {
             cost = 30;
         }
-        if (!bender.reduceChi(cost)) {
+        if (!bender.reduceChi(this, cost)) {
             bender.setCurrAbility(null);
             return;
         }

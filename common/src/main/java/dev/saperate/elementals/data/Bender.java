@@ -7,7 +7,6 @@ import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.Ability;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.NoneElement;
-import dev.saperate.elementals.elements.water.WaterElement;
 import dev.saperate.elementals.network.packets.S2C.SyncChiPacket;
 import dev.saperate.elementals.network.packets.S2C.SyncCurrAbilityPacket;
 import dev.saperate.elementals.network.packets.S2C.SyncElementsPacket;
@@ -15,7 +14,6 @@ import dev.saperate.elementals.utils.SapsUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static dev.saperate.elementals.utils.SapsUtils.safeHasStatusEffect;
 
 public class Bender {
     public static Map<UUID, Bender> benders = new HashMap<>();
@@ -104,11 +100,9 @@ public class Bender {
 
     public void tick() {
 
-        plrData.chi = Math.min(ElementalConfig.get().MAX_CHI,
-                plrData.chi + (ElementalConfig.get().CHI_REGENERATION_RATE
-                        * (safeHasStatusEffect(ElementalsStatusEffects.OVERCHARGED.get(), player) ? 4 : 1)
-                        * (safeHasStatusEffect(ElementalsStatusEffects.BURNOUT.get(), player) ? 0.25f : 1)
-                ));
+        // Chi is unlimited now, so the bar just always sits at max instead of regenerating
+        // toward it over time.
+        plrData.chi = ElementalConfig.get().MAX_CHI;
 
         backgroundAbilities.forEach((Ability ability, Object data) -> ability.onBackgroundTick(this, data));
 
@@ -376,41 +370,13 @@ public class Bender {
      * @return True if we were able to reduce the chi without going in the negatives, false if not.
      */
     public boolean reduceChi(Ability ability, float val, boolean giveXP) {
-        ServerPlayer serverPlayer = ((ServerPlayer) player);
-        if (serverPlayer.gameMode.getGameModeForPlayer().equals(GameType.CREATIVE)) {
-            return true;
-        }
-
-        // Mastery reward: evaluated per-element. The element that actually owns this ability
-        // (which may not be the currently active one, e.g. a background-ticking ability from an
-        // element you've since switched away from) no longer drains Chi once its entire skill
-        // tree is maximized. Elements you haven't maxed keep spending Chi normally.
-        Element owningElement = getOwningElement(ability);
-        if (owningElement != null && owningElement.isSkillTreeComplete(this)) {
-            return true;
-        }
-
-        // Waterbenders draw power from falling snow: chi is free while it's snowing on you.
-        if (getElement() == WaterElement.get() && SapsUtils.isBeingSnowedOn(player)) {
-            return true;
-        }
-
-        float newChi = plrData.chi - val;
-        if (newChi < 0) {
-            if(newChi >= -10 && !safeHasStatusEffect(ElementalsStatusEffects.BURNOUT.get(),player)){
-                newChi = 0;
-                player.addEffect(new MobEffectInstance(ElementalsStatusEffects.BURNOUT.get(),200,0,false,false,true));
-            }else {
-                return false;
-            }
-        }
-
-        if(giveXP){
+        // Chi is unlimited for every bending, every element, and every ability - whether the
+        // cost is a one-shot cast or a continuous per-tick drain. We keep the xp-on-use
+        // behaviour so leveling still progresses, but Chi itself is never actually spent and
+        // this always reports success.
+        if (giveXP) {
             addXp(xpAddedByChi(val));
         }
-
-        plrData.chi = newChi;
-        syncChi();
         return true;
     }
 

@@ -24,7 +24,7 @@ public class AbilityFire3 implements Ability {
     @Override
     public void onLeftClick(Bender bender, boolean started) {
         if (bender.abilityData == null) {
-            if (!bender.reduceChi(10)) {
+            if (!bender.reduceChi(this, 10)) {
                 if (bender.abilityData == null) {
                     bender.setCurrAbility(null);
                 } else {
@@ -75,7 +75,7 @@ public class AbilityFire3 implements Ability {
             player.move(MoverType.PLAYER, player.getDeltaMovement());
             player.fallDistance = 0;
 
-            if (!bender.reduceChi(0.5f)) {
+            if (!bender.reduceChi(this, 0.5f)) {
                 onRemove(bender);
                 return;
             }

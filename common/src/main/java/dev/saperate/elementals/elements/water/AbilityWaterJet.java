@@ -19,7 +19,7 @@ public class AbilityWaterJet implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
         Player player = bender.player;
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -79,13 +79,12 @@ public class AbilityWaterJet implements Ability {
                     0, 0, 0, 0);
         } else {
             bender.player.addEffect(new MobEffectInstance(ElementalsStatusEffects.STATIONARY.get(), 1, 1, false, false, false));
-            if (!bender.reduceChi(0.2f)) {
+            if (!bender.reduceChi(this, 0.2f)) {
                 if (bender.abilityData == null) {
                     bender.setCurrAbility(null);
                 } else {
                     onRemove(bender);
                 }
-                return;
             }
         }
     }

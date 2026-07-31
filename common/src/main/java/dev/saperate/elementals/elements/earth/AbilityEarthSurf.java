@@ -72,7 +72,7 @@ public class AbilityEarthSurf implements Ability {
                 return;
             }
 
-            if (!bender.reduceChi(10)) {
+            if (!bender.reduceChi(this, 10)) {
                 onRemove(bender);
                 return;
             }
@@ -85,7 +85,7 @@ public class AbilityEarthSurf implements Ability {
 
         EarthBlockEntity[] skates = (EarthBlockEntity[]) bender.abilityData;
 
-        if (!bender.reduceChi(0.2f)) {
+        if (!bender.reduceChi(this, 0.2f)) {
             onRemove(bender);
             return;
         }

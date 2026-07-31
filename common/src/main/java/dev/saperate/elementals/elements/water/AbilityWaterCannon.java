@@ -23,7 +23,7 @@ public class AbilityWaterCannon implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(20)) {
+        if (!bender.reduceChi(this, 20)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

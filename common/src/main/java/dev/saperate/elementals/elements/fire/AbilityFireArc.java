@@ -14,7 +14,7 @@ public class AbilityFireArc implements Ability {
     public void onCall(Bender bender, long deltaT) {
         Player player = bender.player;
         int chi = PlayerData.get(player).canUseUpgrade("fireArcEfficiencyI") ? 10 : 20;
-        if (!bender.reduceChi(chi)) {
+        if (!bender.reduceChi(this, chi)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

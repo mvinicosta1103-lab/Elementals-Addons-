@@ -14,7 +14,7 @@ public class AbilityWaterJump implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             onRemove(bender);
             return;
         }

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 public class AbilityWaterShield implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(5)) {
+        if (!bender.reduceChi(this, 5)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -36,7 +36,7 @@ public class AbilityWaterShield implements Ability {
 
     @Override
     public void onTick(Bender bender) {
-        if (!bender.reduceChi(0.15f)) {
+        if (!bender.reduceChi(this, 0.15f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -14,8 +14,8 @@ public class AbilityMetalBullets implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
         Player player = bender.player;
-        if (!bender.plrData.canUseUpgrade("metalBullet") 
-                || !bender.reduceChi(20) || !MetalElement.canBend(player, 16)) {
+        if (!bender.plrData.canUseUpgrade("metalBullet")
+                || !bender.reduceChi(this, 20) || !MetalElement.canBend(player, 16)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

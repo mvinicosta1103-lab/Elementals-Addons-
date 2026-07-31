@@ -27,7 +27,7 @@ public class AbilityMetalDecoy implements Ability {
         PlayerData plrData = PlayerData.get(plr);
 
         if (!plrData.canUseUpgrade("metalDecoy") ||
-                !bender.reduceChi(40) || !MetalElement.canBend(plr, 63)) {
+                !bender.reduceChi(this, 40) || !MetalElement.canBend(plr, 63)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

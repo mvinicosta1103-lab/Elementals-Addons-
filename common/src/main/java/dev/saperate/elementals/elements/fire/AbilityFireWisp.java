@@ -32,7 +32,7 @@ public class AbilityFireWisp implements Ability {
             return;
         }
 
-        if (!originalBender.reduceChi(10)) {
+        if (!originalBender.reduceChi(this, 10)) {
             return;
         }
         Player player = bender.player;
@@ -50,7 +50,7 @@ public class AbilityFireWisp implements Ability {
     @Override
     public void onBackgroundTick(Bender bender, Object data) {
         FireWispEntity wisp = (FireWispEntity) data;
-        if(!bender.reduceChi(0.075f, false) || wisp.isInWater()){
+        if (!bender.reduceChi(this, 0.075f, false) || wisp.isInWater()) {
             wisp.discard();
             bender.removeAbilityFromBackground(this);
         }

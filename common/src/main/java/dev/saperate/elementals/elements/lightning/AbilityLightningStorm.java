@@ -24,7 +24,7 @@ public class AbilityLightningStorm implements Ability {
         if (bender.isAbilityInBackground(this) || !bender.player.level().canSeeSky(bender.player.getOnPos().above())) {
             return;
         }
-        if (!bender.reduceChi(100)) {
+        if (!bender.reduceChi(this, 100)) {
             return;
         }
         bender.addBackgroundAbility(this, new Object[]{0, bender.player.position()});

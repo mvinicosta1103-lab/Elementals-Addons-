@@ -15,7 +15,7 @@ public class AbilityAirCompression implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(CHI_COST)) {
+        if (!bender.reduceChi(this, CHI_COST)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

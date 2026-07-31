@@ -11,7 +11,7 @@ public class AbilityWaterHealing implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(30)) {
+        if (!bender.reduceChi(this, 30)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

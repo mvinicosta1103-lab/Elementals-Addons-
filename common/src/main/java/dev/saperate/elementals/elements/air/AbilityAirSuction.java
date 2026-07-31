@@ -32,7 +32,7 @@ public class AbilityAirSuction implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(5)) {
+        if (!bender.reduceChi(this, 5)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -46,7 +46,7 @@ public class AbilityAirSuction implements Ability {
 
     @Override
     public void onTick(Bender bender) {
-        if (!bender.reduceChi(0.3f)) {
+        if (!bender.reduceChi(this, 0.3f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

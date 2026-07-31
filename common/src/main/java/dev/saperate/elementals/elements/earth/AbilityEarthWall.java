@@ -32,7 +32,7 @@ public class AbilityEarthWall implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(15)) {
+        if (!bender.reduceChi(this, 15)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

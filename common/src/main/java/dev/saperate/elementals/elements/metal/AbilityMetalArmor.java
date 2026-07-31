@@ -34,7 +34,7 @@ public class AbilityMetalArmor implements Ability {
         
         float cost = bender.plrData.canUseUpgrade("metalArmorEfficiencyI") ? 20 : 30;
         if (!bender.plrData.canUseUpgrade("metalArmor") ||
-                !bender.reduceChi(cost) || !MetalElement.canBend(player,54)) {
+                !bender.reduceChi(this, cost) || !MetalElement.canBend(player, 54)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

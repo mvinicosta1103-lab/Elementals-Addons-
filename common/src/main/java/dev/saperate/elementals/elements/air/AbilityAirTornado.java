@@ -13,7 +13,7 @@ public class AbilityAirTornado implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(15)) {
+        if (!bender.reduceChi(this, 15)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -44,7 +44,7 @@ public class AbilityAirTornado implements Ability {
 
     @Override
     public void onTick(Bender bender) {
-        if (!bender.reduceChi(0.1f)) {
+        if (!bender.reduceChi(this, 0.1f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

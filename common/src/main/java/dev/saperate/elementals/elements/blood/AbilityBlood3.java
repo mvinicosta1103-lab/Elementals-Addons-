@@ -23,12 +23,12 @@ public class AbilityBlood3 implements Ability {
         }
 
         if (playerData.canUseUpgrade("bloodOvercharge") && deltaT >= 500 && !safeHasStatusEffect(ElementalsStatusEffects.OVERCHARGED.get(), player) && !safeHasStatusEffect(ElementalsStatusEffects.BURNOUT.get(), player) ) {
-            if (!bender.reduceChi(15)) {
+            if (!bender.reduceChi(this, 15)) {
                 return;
             }
             player.addEffect(new MobEffectInstance(ElementalsStatusEffects.OVERCHARGED.get(), playerData.canUseUpgrade("bloodOverchargeStrengthI") ? 600 : 400, 1, false, false, true));
         }else if(player.onGround()){
-            if (!bender.reduceChi(10)) {
+            if (!bender.reduceChi(this, 10)) {
                 return;
             }
             float power = 1.5f;

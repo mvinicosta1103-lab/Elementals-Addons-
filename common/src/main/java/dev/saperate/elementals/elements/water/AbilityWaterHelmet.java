@@ -14,7 +14,7 @@ public class AbilityWaterHelmet implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(25)) {
+        if (!bender.reduceChi(this, 25)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

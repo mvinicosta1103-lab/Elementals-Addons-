@@ -27,7 +27,7 @@ public class AbilityBloodPush implements Ability {
         );
 
         LivingEntity living = (LivingEntity) SapsUtils.entityFromHitResult(hit);
-        if (living != null && bender.reduceChi(10)) {
+        if (living != null && bender.reduceChi(this, 10)) {
             double x = (double) deltaT / 1000;
             int power = (int) Math.min(
                     bender.plrData.canUseUpgrade("bloodPushPowerI") ? 4 : 2.5f,

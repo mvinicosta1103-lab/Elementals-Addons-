@@ -36,7 +36,7 @@ public class AbilityFireWhip implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(12)) {
+        if (!bender.reduceChi(this, 12)) {
             bender.setCurrAbility(null);
             return;
         }

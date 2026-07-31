@@ -23,7 +23,7 @@ public class AbilityBloodShield implements Ability {
 
         if (bender.isAbilityInBackground(this)) {
             bender.removeAbilityFromBackground(this);
-        } else if (bender.reduceChi(15)) {
+        } else if (bender.reduceChi(this, 15)) {
             bender.addBackgroundAbility(this, 0);
         }
     }
@@ -49,7 +49,7 @@ public class AbilityBloodShield implements Ability {
                 entity -> entity instanceof LivingEntity
         );
 
-        if (!bender.reduceChi(0.125f + hits.size() * 0.1f)) {
+        if (!bender.reduceChi(this, 0.125f + hits.size() * 0.1f)) {
             bender.removeAbilityFromBackground(this);
             return;
         }

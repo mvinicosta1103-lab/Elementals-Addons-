@@ -26,7 +26,7 @@ public class AbilityAirBlade implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(8)) {
+        if (!bender.reduceChi(this, 8)) {
             bender.setCurrAbility(null);
             return;
         }

@@ -12,7 +12,7 @@ public class AbilityWaterArc implements Ability {
     public void onCall(Bender bender, long deltaT) {
         Player player = bender.player;
         int chi = PlayerData.get(player).canUseUpgrade("waterArcEfficiencyI") ? 5 : 15;
-        if (!bender.reduceChi(chi)) {
+        if (!bender.reduceChi(this, chi)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

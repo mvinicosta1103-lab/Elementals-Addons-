@@ -23,7 +23,7 @@ public class AbilityLightningRedirect implements Ability {
         } else if (plrData.canUseUpgrade("lightningRedirectionEfficiencyI")) {
             cost = 15;
         }
-        if (!bender.reduceChi(cost)) {
+        if (!bender.reduceChi(this, cost)) {
             return;
         }
 

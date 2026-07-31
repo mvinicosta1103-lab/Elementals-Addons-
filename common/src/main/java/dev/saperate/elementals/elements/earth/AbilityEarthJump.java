@@ -23,7 +23,7 @@ public class AbilityEarthJump implements Ability {
             return;
         }
 
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -31,7 +31,7 @@ public class AbilityEarthChunkPickup implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(30)) {
+        if (!bender.reduceChi(this, 30)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

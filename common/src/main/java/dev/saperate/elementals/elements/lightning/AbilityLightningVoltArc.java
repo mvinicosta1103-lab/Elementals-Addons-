@@ -13,7 +13,7 @@ public class AbilityLightningVoltArc implements Ability {
     @Override
     public void onCall(Bender bender, long deltaT) {
         Player player = bender.player;
-        if (!bender.reduceChi(10)) {
+        if (!bender.reduceChi(this, 10)) {
             bender.setCurrAbility(null);
             return;
         }

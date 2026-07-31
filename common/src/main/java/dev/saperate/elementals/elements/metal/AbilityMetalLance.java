@@ -22,7 +22,7 @@ public class AbilityMetalLance implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {//TODO add chargeup after casting
-        if (!bender.reduceChi(15)) {
+        if (!bender.reduceChi(this, 15)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

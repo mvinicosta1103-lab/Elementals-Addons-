@@ -20,7 +20,7 @@ public class AbilityWaterSuffocate implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(5)) {
+        if (!bender.reduceChi(this, 5)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -66,7 +66,7 @@ public class AbilityWaterSuffocate implements Ability {
             onRemove(bender);
             return;
         }
-        if (!bender.reduceChi(0.2f)) {
+        if (!bender.reduceChi(this, 0.2f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

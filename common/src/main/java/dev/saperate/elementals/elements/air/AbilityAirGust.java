@@ -22,7 +22,7 @@ public class AbilityAirGust implements Ability {
 
     @Override
     public void onCall(Bender bender, long deltaT) {
-        if (!bender.reduceChi(5)) {
+        if (!bender.reduceChi(this, 5)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {
@@ -49,7 +49,7 @@ public class AbilityAirGust implements Ability {
             bender.setCurrAbility(null);
             return;
         }
-        if (!bender.reduceChi(0.25f)) {
+        if (!bender.reduceChi(this, 0.25f)) {
             if (bender.abilityData == null) {
                 bender.setCurrAbility(null);
             } else {

@@ -28,7 +28,7 @@ public class AbilityMetalBind implements Ability {
             else if (plrData.canUseUpgrade("metalBindEfficiencyI"))
                 cost = 16;
 
-            if (!bender.reduceChi(10) || !MetalElement.canBend(bender.player, cost)) {
+            if (!bender.reduceChi(this, 10) || !MetalElement.canBend(bender.player, cost)) {
                 return;
             }
 
