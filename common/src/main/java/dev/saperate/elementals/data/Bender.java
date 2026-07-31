@@ -322,16 +322,26 @@ public class Bender {
     }
 
     /**
-     * This method also adds xp proportional to the amount of chi used
-     * <br>ex:
-     * <br>  5 chi -> 0.5
-     * <br> 15 chi -> 1.5
-     * <br> 30 chi -> 3
      * @param val The amount by which we should reduce the chi level
      * @return True if we were able to reduce the chi without going in the negatives, false if not.
+     * @deprecated Prefer {@link #reduceChi(Ability, float)} so Chi mastery is evaluated
+     * against the ability's own element instead of whichever element is currently active.
      */
+    @Deprecated
     public boolean reduceChi(float val) {
-        return reduceChi(val,true);
+        return reduceChi(null, val, true);
+    }
+
+    /**
+     * @param val    The amount by which we should reduce the chi level
+     * @param giveXP Whether we give the player xp for this
+     * @return True if we were able to reduce the chi without going in the negatives, false if not.
+     * @deprecated Prefer {@link #reduceChi(Ability, float, boolean)} so Chi mastery is evaluated
+     * against the ability's own element instead of whichever element is currently active.
+     */
+    @Deprecated
+    public boolean reduceChi(float val, boolean giveXP) {
+        return reduceChi(null, val, giveXP);
     }
 
     /**
@@ -340,19 +350,43 @@ public class Bender {
      * <br>  5 chi -> 0.5
      * <br> 15 chi -> 1.5
      * <br> 30 chi -> 3
+     * @param ability The ability spending the chi. Used to look up which of this bender's elements
+     *                actually owns it, so mastery (free chi) is evaluated per-element - not just for
+     *                whichever element happens to be active right now. Pass {@code null} to fall back
+     *                to the currently active element (e.g. when no specific ability is involved).
+     * @param val The amount by which we should reduce the chi level
+     * @return True if we were able to reduce the chi without going in the negatives, false if not.
+     */
+    public boolean reduceChi(Ability ability, float val) {
+        return reduceChi(ability, val, true);
+    }
+
+    /**
+     * This method also adds xp proportional to the amount of chi used
+     * <br>ex:
+     * <br>  5 chi -> 0.5
+     * <br> 15 chi -> 1.5
+     * <br> 30 chi -> 3
+     * @param ability The ability spending the chi. Used to look up which of this bender's elements
+     *                actually owns it, so mastery (free chi) is evaluated per-element - not just for
+     *                whichever element happens to be active right now. Pass {@code null} to fall back
+     *                to the currently active element (e.g. when no specific ability is involved).
      * @param val The amount by which we should reduce the chi level
      * @param giveXP Whether we give the player xp for this
      * @return True if we were able to reduce the chi without going in the negatives, false if not.
      */
-    public boolean reduceChi(float val, boolean giveXP) {
+    public boolean reduceChi(Ability ability, float val, boolean giveXP) {
         ServerPlayer serverPlayer = ((ServerPlayer) player);
         if (serverPlayer.gameMode.getGameModeForPlayer().equals(GameType.CREATIVE)) {
             return true;
         }
 
-        // Mastery reward: once the active element's entire skill tree is completed
-        // (i.e. all of its Abilities are maximized), it no longer drains Chi.
-        if (getElement().isSkillTreeComplete(this)) {
+        // Mastery reward: evaluated per-element. The element that actually owns this ability
+        // (which may not be the currently active one, e.g. a background-ticking ability from an
+        // element you've since switched away from) no longer drains Chi once its entire skill
+        // tree is maximized. Elements you haven't maxed keep spending Chi normally.
+        Element owningElement = getOwningElement(ability);
+        if (owningElement != null && owningElement.isSkillTreeComplete(this)) {
             return true;
         }
 
@@ -378,6 +412,25 @@ public class Bender {
         plrData.chi = newChi;
         syncChi();
         return true;
+    }
+
+    /**
+     * Finds which of this bender's owned elements actually registered the given ability, so
+     * Chi mastery can be checked against that specific element rather than the active one.
+     *
+     * @param ability The ability to look up. May be {@code null}.
+     * @return The owning element, or the currently active element if {@code ability} is
+     * {@code null} or isn't found on any of this bender's elements.
+     */
+    private Element getOwningElement(Ability ability) {
+        if (ability != null) {
+            for (Element element : plrData.elements) {
+                if (element.contains(ability)) {
+                    return element;
+                }
+            }
+        }
+        return getElement();
     }
 
 
