@@ -40,8 +40,14 @@ public class StateDataSaverAndLoader extends SavedData {
             Element element = playerData.getElement();
             for (int i = 0; i < 12; i++) {
                 String bindTag = "bind" + (i + 1);
-                playerData.boundAbilities[i] = nbt.contains(bindTag)
-                        ? element.getBindableAbility(nbt.getInt(bindTag))
+                //A stored index of -1 means this slot was unbound (null) at save time - usually because
+                //the ability living at this slot didn't exist yet in an older version of the addon.
+                //Treat that the same as "no tag saved" and fall back to the element's default binding
+                //for this slot, instead of calling getBindableAbility(-1) which would lock the slot to
+                //null forever (since we'd just save -1 again next time).
+                int storedIndex = nbt.contains(bindTag) ? nbt.getInt(bindTag) : -1;
+                playerData.boundAbilities[i] = storedIndex >= 0
+                        ? element.getBindableAbility(storedIndex)
                         : element.getBindableAbility(i);
             }
 
