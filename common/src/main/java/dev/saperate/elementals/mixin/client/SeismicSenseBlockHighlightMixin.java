@@ -1,6 +1,5 @@
 package dev.saperate.elementals.mixin.client;
 
-import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import dev.saperate.elementals.client.SeismicSenseHighlights;
@@ -21,21 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-/**
- * Renders a colored wireframe box over every block Seismic Sense has revealed nearby (ores,
- * lava, water - see {@link SeismicSenseHighlights}), with depth testing disabled so it shows
- * through terrain, the same way a Glowing entity shows through walls.
- * <br><br>
- * NOTE: the exact parameter list of {@code renderLevel} below matches the Mojang-mapped
- * LevelRenderer signature used across 1.20-1.21.x. If your mappings differ slightly (extra/
- * reordered parameters), the game will fail to start with a mixin apply error naming this class -
- * adjust the method signature here to match and it'll work the same way.
- */
 @Mixin(LevelRenderer.class)
 public abstract class SeismicSenseBlockHighlightMixin {
 
     @Inject(method = "renderLevel", at = @At("TAIL"))
-    private void elementals$renderSeismicHighlights(GraphicsResourceAllocator resourceAllocator, DeltaTracker deltaTracker,
+    private void elementals$renderSeismicHighlights(DeltaTracker deltaTracker,
                                                     boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer,
                                                     LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix,
                                                     CallbackInfo ci) {

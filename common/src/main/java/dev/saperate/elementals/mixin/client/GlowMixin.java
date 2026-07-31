@@ -3,11 +3,9 @@ package dev.saperate.elementals.mixin.client;
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,16 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static dev.saperate.elementals.utils.SapsUtils.safeHasStatusEffect;
 
 
-@Mixin(LivingEntity.class)
+@Mixin(Entity.class)
 public abstract class GlowMixin {
-
-
-    @Shadow
-    public abstract void remove(Entity.RemovalReason reason);
 
     @Inject(at = @At("HEAD"), method = "isCurrentlyGlowing", cancellable = true)
     private void render(CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity e = ((LivingEntity) (Object) this);
+        Entity e = ((Entity) (Object) this);
         if (elementals$isRevealedBySeismicSense(e)) {
             cir.setReturnValue(true);
         }
@@ -39,14 +33,14 @@ public abstract class GlowMixin {
      */
     @Inject(at = @At("HEAD"), method = "getTeamColor", cancellable = true)
     private void elementals$teamColor(CallbackInfoReturnable<Integer> cir) {
-        LivingEntity e = ((LivingEntity) (Object) this);
+        Entity e = ((Entity) (Object) this);
         if (elementals$isRevealedBySeismicSense(e)) {
             cir.setReturnValue(elementals$categoryColor(e));
         }
     }
 
     @Unique
-    private boolean elementals$isRevealedBySeismicSense(LivingEntity e) {
+    private boolean elementals$isRevealedBySeismicSense(Entity e) {
         Player player = Minecraft.getInstance().player;
         return player != null
                 && safeHasStatusEffect(ElementalsStatusEffects.SEISMIC_SENSE.get(), player) && e.level().isClientSide && e.onGround()
@@ -56,7 +50,7 @@ public abstract class GlowMixin {
     }
 
     @Unique
-    private int elementals$categoryColor(LivingEntity e) {
+    private int elementals$categoryColor(Entity e) {
         MobCategory category = e.getType().getCategory();
         return switch (category) {
             case MONSTER -> 0xFFFF5050;
