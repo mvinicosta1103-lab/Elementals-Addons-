@@ -27,6 +27,7 @@
     "client.MouseMixin",
     "client.OverlayMixin",
     "client.PlayerEntityRendererMixin",
+    "client.SeismicSenseBlockHighlightMixin",
     "client.SpectatorMenuCommandMixin"
   ],
   "server": [],

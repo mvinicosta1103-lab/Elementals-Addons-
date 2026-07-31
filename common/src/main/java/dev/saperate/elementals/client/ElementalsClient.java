@@ -73,6 +73,7 @@ public class ElementalsClient {
         new KeyToggleBlueFire();
 
         Services.EVENTS.onClientJoin(ElementalsClient::onClientJoin);
+        Services.EVENTS.onClientTick(SeismicSenseHighlights::tick);
 
         Services.REGISTRY.registerClientOverlay(
                 ResourceLocation.fromNamespaceAndPath(MODID, "cast_timer"), new CastTimerHudOverlay());
