@@ -7,6 +7,7 @@ import dev.saperate.elementals.effects.ElementalsStatusEffects;
 import dev.saperate.elementals.elements.Ability;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.NoneElement;
+import dev.saperate.elementals.elements.water.WaterElement;
 import dev.saperate.elementals.network.packets.S2C.SyncChiPacket;
 import dev.saperate.elementals.network.packets.S2C.SyncCurrAbilityPacket;
 import dev.saperate.elementals.network.packets.S2C.SyncElementsPacket;
@@ -14,6 +15,7 @@ import dev.saperate.elementals.utils.SapsUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -343,17 +345,13 @@ public class Bender {
      * @return True if we were able to reduce the chi without going in the negatives, false if not.
      */
     public boolean reduceChi(float val, boolean giveXP) {
-        // Chi requirement disabled: no Element/ability needs to spend Chi anymore.
-        return true;
-
-        /* Original chi-cost logic (kept for reference, currently unreachable):
         ServerPlayer serverPlayer = ((ServerPlayer) player);
         if (serverPlayer.gameMode.getGameModeForPlayer().equals(GameType.CREATIVE)) {
             return true;
         }
 
-        // Mastery reward: once the active element's entire skill tree is completed,
-        // its abilities no longer drain chi.
+        // Mastery reward: once the active element's entire skill tree is completed
+        // (i.e. all of its Abilities are maximized), it no longer drains Chi.
         if (getElement().isSkillTreeComplete(this)) {
             return true;
         }
@@ -380,7 +378,6 @@ public class Bender {
         plrData.chi = newChi;
         syncChi();
         return true;
-        */
     }
 
 
