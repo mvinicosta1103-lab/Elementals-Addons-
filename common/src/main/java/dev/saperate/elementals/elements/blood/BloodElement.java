@@ -1,6 +1,5 @@
 package dev.saperate.elementals.elements.blood;
 
-import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
 import net.minecraft.world.level.Level;
@@ -79,12 +78,7 @@ public class BloodElement extends Element {
     public String[] getBackgroundTextures() {
         return new String[]{"bottom.png"};
     }
-    
-    
-    @Override
-    public boolean isSkillTreeComplete(Bender bender) {
-        return bender.hasElement(this);
-    }//TODO this
+
 
     public static boolean isNight(Level world) {
         long time = world.getDayTime() % 24000;

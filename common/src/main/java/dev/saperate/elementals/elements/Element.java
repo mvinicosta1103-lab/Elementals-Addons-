@@ -2,6 +2,7 @@ package dev.saperate.elementals.elements;
 
 import dev.saperate.elementals.Constants;
 import dev.saperate.elementals.data.Bender;
+import dev.saperate.elementals.data.PlayerData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -162,7 +163,64 @@ public abstract class Element{
         return new String[]{};
     }
 
-    public abstract boolean isSkillTreeComplete(Bender bender);
+    /**
+     * Recursively checks if an upgrade and everything below it has been maxed out.
+     * <br>For exclusive branches (where the player can only pick one of several children),
+     * only one of the children needs to be fully maxed for the branch to count as complete,
+     * since picking the others is impossible once one has been chosen.
+     * <br>For normal branches, every child must be fully maxed.
+     *
+     * @param upgrade The upgrade node we're checking
+     * @param plrData The data of the player we're checking against
+     * @return True if this node and the required part of its subtree are maxed out
+     */
+    private static boolean isBranchMaxed(Upgrade upgrade, PlayerData plrData) {
+        if (!plrData.canUseUpgrade(upgrade.name)) {
+            return false;
+        }
+        if (upgrade.children.length == 0) {
+            return true;
+        }
+        if (upgrade.exclusive) {
+            for (Upgrade child : upgrade.children) {
+                if (isBranchMaxed(child, plrData)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        for (Upgrade child : upgrade.children) {
+            if (!isBranchMaxed(child, plrData)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether the player has fully maxed out this element's entire skill tree
+     * (every upgrade purchased, respecting mutually exclusive branches where only one
+     * path needs to be finished). This is computed directly from the upgrade tree
+     * structure ({@link #root}) so every element behaves the same way and stays
+     * automatically in sync whenever the tree itself changes.
+     * <br><br>
+     * When this returns true, {@link Bender#reduceChi(float, boolean)} treats the
+     * element as free to use (no more Chi drain) as a mastery reward.
+     *
+     * @param bender The bender we are checking
+     * @return True if the player has this element AND has completely maxed its skill tree
+     */
+    public boolean isSkillTreeComplete(Bender bender) {
+        if (!bender.hasElement(this)) {
+            return false;
+        }
+        for (Upgrade child : root.children) {
+            if (!isBranchMaxed(child, bender.plrData)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public int getColor(){
         return 0xFFa0e8e6;

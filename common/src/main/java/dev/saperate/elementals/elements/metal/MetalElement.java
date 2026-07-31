@@ -1,6 +1,5 @@
 package dev.saperate.elementals.elements.metal;
 
-import dev.saperate.elementals.data.Bender;
 import dev.saperate.elementals.data.ElementalConfig;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
@@ -198,12 +197,6 @@ public class MetalElement extends Element {
     public int getTertiaryColor() {
         return 0xFF4f3933;
     }
-
-    @Override
-    public boolean isSkillTreeComplete(Bender bender) {
-        return bender.hasElement(this);
-    }//TODO make an algorithm for this it's annoying to do by hand
-
 
     @Override
     public String[] getBackgroundTextures() {

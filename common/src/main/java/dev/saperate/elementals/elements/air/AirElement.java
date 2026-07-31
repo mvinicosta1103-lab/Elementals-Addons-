@@ -1,7 +1,5 @@
 package dev.saperate.elementals.elements.air;
 
-import dev.saperate.elementals.data.Bender;
-import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
 
@@ -125,17 +123,4 @@ public class AirElement extends Element {
         return new String[]{"bottom.png"};
     }
 
-    @Override
-    public boolean isSkillTreeComplete(Bender bender) {
-        PlayerData plrData = bender.plrData;
-        return bender.hasElement(this)
-                && (plrData.canUseUpgrade("airTornadoSpeedII") || plrData.canUseUpgrade("airShield") || plrData.canUseUpgrade("airSuction"))
-                && plrData.canUseUpgrade("airBallSpeedII")
-                && ((plrData.canUseUpgrade("airBulletsMastery") && plrData.canUseUpgrade("airBulletsCountII")) || plrData.canUseUpgrade("airSuffocate") || (plrData.canUseUpgrade("airBladeRangeI") && plrData.canUseUpgrade("airBladeDamageI")))
-                && plrData.canUseUpgrade("airStreamMastery")
-                && plrData.canUseUpgrade("airJumpRangeII")
-                && plrData.canUseUpgrade("airScooterSpeedII")
-                && plrData.canUseUpgrade("airSpiritProjectionRangeIV")
-                ;
-    }
 }

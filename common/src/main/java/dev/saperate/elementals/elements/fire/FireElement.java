@@ -1,7 +1,5 @@
 package dev.saperate.elementals.elements.fire;
 
-import dev.saperate.elementals.data.Bender;
-import dev.saperate.elementals.data.PlayerData;
 import dev.saperate.elementals.elements.Element;
 import dev.saperate.elementals.elements.Upgrade;
 import net.minecraft.core.BlockPos;
@@ -133,16 +131,4 @@ public class FireElement extends Element {
     }
 
 
-    @Override
-    public boolean isSkillTreeComplete(Bender bender) {
-        PlayerData plrData = bender.plrData;
-        return bender.hasElement(this)
-                && (plrData.canUseUpgrade("blueFire") || plrData.canUseUpgrade("fireWallWideI")|| plrData.canUseUpgrade("fireWallTallI") || (plrData.canUseUpgrade("fireSpikesCountI") && plrData.canUseUpgrade("fireSpikesRangeI")))
-                && plrData.canUseUpgrade("fireBallSpeedII")
-                && (plrData.canUseUpgrade("flameThrower") || plrData.canUseUpgrade("fireShield") || (plrData.canUseUpgrade("fireWhipRangeI") && plrData.canUseUpgrade("fireWhipDamageI")))
-                && plrData.canUseUpgrade("fireArcMastery")
-                && plrData.canUseUpgrade("fireJetSpeedII")
-                && plrData.canUseUpgrade("fireJumpRangeII")
-                ;
-    }
 }
