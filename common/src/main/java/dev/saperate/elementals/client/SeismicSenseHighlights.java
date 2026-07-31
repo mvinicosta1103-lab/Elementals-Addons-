@@ -1,10 +1,12 @@
 package dev.saperate.elementals.client;
 
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
+import dev.saperate.elementals.effects.SeismicSenseStatusEffect;
 import dev.saperate.elementals.misc.ElementalsCustomTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,10 +31,11 @@ public class SeismicSenseHighlights {
      */
     private static final int SCAN_INTERVAL_TICKS = 10;
     /**
-     * How far out (in blocks) we scan, in every direction. Kept modest since this runs on the
-     * main thread. //TODO tie this to the same range upgrades used for mob detection
+     * How far out (in blocks) we scan, in every direction, per Seismic Sense Range tier
+     * ({@code earthSeismicSenseRangeI}/{@code II}). Kept modest since this runs on the main
+     * thread - a full recursive/BFS reveal at 100 blocks would be far too expensive.
      */
-    private static final int SCAN_RADIUS = 16;
+    private static final int[] SCAN_RADIUS_BY_TIER = {12, 18, 26};
     private static int ticksUntilNextScan = 0;
     private static List<Highlight> highlights = new ArrayList<>();
 
@@ -72,7 +75,9 @@ public class SeismicSenseHighlights {
         BlockPos center = player.blockPosition();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
-        int r = SCAN_RADIUS;
+        MobEffectInstance instance = player.getEffect(ElementalsStatusEffects.SEISMIC_SENSE.get());
+        int rangeTier = instance == null ? 0 : SeismicSenseStatusEffect.getRangeTier(instance.getAmplifier());
+        int r = SCAN_RADIUS_BY_TIER[Math.min(rangeTier, SCAN_RADIUS_BY_TIER.length - 1)];
         for (int dx = -r; dx <= r; dx++) {
             for (int dy = -r; dy <= r; dy++) {
                 for (int dz = -r; dz <= r; dz++) {

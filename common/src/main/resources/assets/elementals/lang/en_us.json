@@ -497,9 +497,17 @@
   "upgrade.elementals.earthPickupRangeII.description": " Pickup earth from 15 blocks away.",
 
   "upgrade.elementals.earthSeismicSense": "Seismic Sense",
-  "upgrade.elementals.earthSeismicSense.description": " By listening to the earth and its vibration, you can detect living being, even across walls.",
+  "upgrade.elementals.earthSeismicSense.description": " By listening to the earth and its vibration, you can detect living beings, lava and water, and even ore veins through walls. Hostile, aquatic and passive creatures are outlined in different colors so you know what's coming.",
   "upgrade.elementals.earthSeismicSense.use": " Use: %d",
   "upgrade.elementals.earthSeismicSense.icon": "earth_seismic_sense",
+  "upgrade.elementals.earthSeismicSenseRangeI": "Range I",
+  "upgrade.elementals.earthSeismicSenseRangeI.description": " Sharpens your senses, extending how far Seismic Sense reaches for creatures, ores, lava and water.",
+  "upgrade.elementals.earthSeismicSenseRangeII": "Range II",
+  "upgrade.elementals.earthSeismicSenseRangeII.description": " Masters this sense to its fullest, detecting vibrations from even further away.",
+  "upgrade.elementals.earthSeismicSenseFocusI": "Focus I",
+  "upgrade.elementals.earthSeismicSenseFocusI.description": " Trains your mind to filter out most of the blindness caused by Seismic Sense, leaving only short flickers instead of near-total darkness.",
+  "upgrade.elementals.earthSeismicSenseFocusII": "Focus II",
+  "upgrade.elementals.earthSeismicSenseFocusII.description": " Perfects your focus - Seismic Sense barely blinds you at all anymore, just the faintest reminder that you're not using your eyes.",
 
   "upgrade.elementals.earthArmor": "Armor",
   "upgrade.elementals.earthArmor.description": " A move allowing you to shield yourself from harm by using earth as armor. Since your armor lacks any eye holes, you will need to use seismic sense to know where your enemies are.",

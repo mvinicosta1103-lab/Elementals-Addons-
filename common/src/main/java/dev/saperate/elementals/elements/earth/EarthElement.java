@@ -89,6 +89,12 @@ public class EarthElement extends Element {
                 new Upgrade("earthPickupRangeI", new Upgrade[]{
                         new Upgrade("earthPickupRangeII", new Upgrade[]{
                                 new Upgrade("earthSeismicSense", new Upgrade[]{
+                                        new Upgrade("earthSeismicSenseRangeI", new Upgrade[]{
+                                                new Upgrade("earthSeismicSenseRangeII", 2)
+                                        }, 1),
+                                        new Upgrade("earthSeismicSenseFocusI", new Upgrade[]{
+                                                new Upgrade("earthSeismicSenseFocusII", 2)
+                                        }, 1),
                                         new Upgrade("earthArmor", 2)
                                 }, 2)
                         }, 1)

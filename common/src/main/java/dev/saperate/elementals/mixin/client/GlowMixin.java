@@ -1,7 +1,9 @@
 package dev.saperate.elementals.mixin.client;
 
 import dev.saperate.elementals.effects.ElementalsStatusEffects;
+import dev.saperate.elementals.effects.SeismicSenseStatusEffect;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +48,23 @@ public abstract class GlowMixin {
                 && safeHasStatusEffect(ElementalsStatusEffects.SEISMIC_SENSE.get(), player) && e.level().isClientSide && e.onGround()
                 && player.onGround()
                 && !player.equals(e)
-                && e.position().subtract(player.position()).length() <= 60; //TODO add upgrades for range
+                && e.position().subtract(player.position()).length() <= elementals$detectionRange(player);
+    }
+
+    /**
+     * Range scales with the Skill Tree's Seismic Sense Range upgrades
+     * ({@code earthSeismicSenseRangeI}/{@code II}), read straight off the effect's amplifier
+     * so no extra client-side state or syncing is needed.
+     */
+    @Unique
+    private double elementals$detectionRange(Player player) {
+        MobEffectInstance instance = player.getEffect(ElementalsStatusEffects.SEISMIC_SENSE.get());
+        int rangeTier = instance == null ? 0 : SeismicSenseStatusEffect.getRangeTier(instance.getAmplifier());
+        return switch (rangeTier) {
+            case 2 -> 100;
+            case 1 -> 75;
+            default -> 50;
+        };
     }
 
     @Unique
