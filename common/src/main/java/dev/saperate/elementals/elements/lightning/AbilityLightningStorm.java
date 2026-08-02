@@ -68,7 +68,7 @@ public class AbilityLightningStorm implements Ability {
             );
 
             if(!entities.isEmpty()){
-                Entity victim = entities.get(player.getRandom().nextInt(0,entities.size() - 1));
+                Entity victim = entities.get(player.getRandom().nextInt(0, entities.size()));
                 range = 0;
                 pos = victim.position();
             }
@@ -78,9 +78,9 @@ public class AbilityLightningStorm implements Ability {
 
         LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, world);
         lightning.setPos(
-                pos.x + player.getRandom().nextInt(-range, range),
+                pos.x + (range > 0 ? player.getRandom().nextInt(-range, range) : 0),
                 pos.y,
-                pos.z + player.getRandom().nextInt(-range, range)
+                pos.z + (range > 0 ? player.getRandom().nextInt(-range, range) : 0)
         );
         world.addFreshEntity(lightning);
 
