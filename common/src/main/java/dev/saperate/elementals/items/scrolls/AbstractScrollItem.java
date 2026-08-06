@@ -32,6 +32,11 @@ public abstract class AbstractScrollItem extends Item {
                 if((getParentElement() != null && !getParentElement().isSkillTreeComplete(bender))){
                     SapsUtils.showActionBarTitle((ServerPlayer) user,
                             Component.literal("You feel as if you still have things to learn").withColor(0xFFC22106));
+                    // Temporary diagnostic: print exactly which node(s) are blocking completion, so we
+                    // can pin down the real cause instead of guessing. Safe to remove once confirmed.
+                    List<String> missing = getParentElement().getMissingUpgrades(bender);
+                    user.sendSystemMessage(Component.literal(
+                            "[debug] missing upgrades on " + getParentElement().name + ": " + missing));
                     return super.use(level, user, hand);
                 }
                 if(bender.addElement(getElement(), true)){

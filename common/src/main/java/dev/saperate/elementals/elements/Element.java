@@ -222,6 +222,52 @@ public abstract class Element{
         return true;
     }
 
+    private static void collectIncomplete(Upgrade upgrade, PlayerData plrData, List<String> missing) {
+        if (!plrData.hasUpgrade(upgrade.name)) {
+            missing.add(upgrade.name);
+            return;
+        }
+        if (upgrade.children.length == 0) {
+            return;
+        }
+        if (upgrade.exclusive) {
+            for (Upgrade child : upgrade.children) {
+                if (isBranchMaxed(child, plrData)) {
+                    return; // one finished exclusive path is enough
+                }
+            }
+            for (Upgrade child : upgrade.children) {
+                collectIncomplete(child, plrData, missing);
+            }
+            return;
+        }
+        for (Upgrade child : upgrade.children) {
+            if (!isBranchMaxed(child, plrData)) {
+                collectIncomplete(child, plrData, missing);
+            }
+        }
+    }
+
+    /**
+     * Diagnostic counterpart to {@link #isSkillTreeComplete(Bender)}: instead of a single boolean,
+     * returns the names of every upgrade node still standing between this bender and a fully
+     * mastered tree. Empty list means the tree really is complete.
+     *
+     * @param bender The bender we are checking
+     * @return The upgrade names still missing (empty if the tree is complete)
+     */
+    public List<String> getMissingUpgrades(Bender bender) {
+        List<String> missing = new ArrayList<>();
+        if (!bender.hasElement(this)) {
+            missing.add("(you don't have " + name + " itself)");
+            return missing;
+        }
+        for (Upgrade child : root.children) {
+            collectIncomplete(child, bender.plrData, missing);
+        }
+        return missing;
+    }
+
     public int getColor(){
         return 0xFFa0e8e6;
     }
