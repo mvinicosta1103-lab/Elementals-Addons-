@@ -327,6 +327,48 @@ public class BendingCommand {
         }
     }
 
+    private static int giveUpgrade(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        Bender bender = Bender.getBender(EntityArgument.getPlayer(context, "player"));
+        PlayerData plrData = StateDataSaverAndLoader.getPlayerState(bender.player);
+
+        String upgradeName = StringArgumentType.getString(context, "upgradeName");
+
+        Upgrade temp = new Upgrade(upgradeName, -1);
+        if (plrData.upgrades.containsKey(temp)) {//true if the player already had the specified upgrade
+            context.getSource().sendFailure(Component.literal(
+                    bender.player.getScoreboardName() + " already has the specified upgrade (" + upgradeName + ")!")
+            );
+            return -1;
+        } else {
+            plrData.upgrades.put(temp, true);
+            context.getSource().sendSuccess((() -> Component.literal(
+                    bender.player.getScoreboardName() + " now has upgrade " + upgradeName + "!")
+            ), true);
+            return 1;
+        }
+    }
+
+    private static int giveSelfUpgrade(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        Bender bender = Bender.getBender(context.getSource().getPlayer());
+        PlayerData plrData = StateDataSaverAndLoader.getPlayerState(bender.player);
+
+        String upgradeName = StringArgumentType.getString(context, "upgradeName");
+
+        Upgrade temp = new Upgrade(upgradeName, -1);
+        if (plrData.upgrades.containsKey(temp)) {//true if the player already had the specified upgrade
+            context.getSource().sendFailure(Component.literal(
+                    "You already have the specified upgrade (" + upgradeName + ")!")
+            );
+            return -1;
+        } else {
+            plrData.upgrades.put(temp, true);
+            context.getSource().sendSuccess((() -> Component.literal(
+                    "You now have upgrade " + upgradeName + "!")
+            ), true);
+            return 1;
+        }
+    }
+
     private static int status(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         Bender bender = Bender.getBender(EntityArgument.getPlayer(context, "player"));
 
