@@ -37,6 +37,10 @@ public class BendingCommand {
                                 Commands.argument("upgradeName", StringArgumentType.string())
                                         .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::removeUpgrade))
                         ).executes(BendingCommand::removeSelfUpgrade))
+                        .then(Commands.literal("give").then(
+                                Commands.argument("upgradeName", StringArgumentType.string())
+                                        .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::giveUpgrade))
+                        ).executes(BendingCommand::giveSelfUpgrade))
                 )
                 .then(Commands.literal("status")
                         .then(Commands.argument("player", EntityArgument.player()).executes(BendingCommand::status))
