@@ -19,9 +19,7 @@ public class AirElement extends Element {
                 }, true, 2),
                 new Upgrade("airStream", new Upgrade[]{
                         new Upgrade("airBall", new Upgrade[]{
-                                new Upgrade("airBallSpeedI", new Upgrade[]{
-                                        new Upgrade("airBallSpeedII", 1)
-                                }, 1)
+                                new Upgrade("airBallSpeedI", 1)
                         }, false, -1, 2),
                         new Upgrade("airStreamDamageI", new Upgrade[]{
                                 new Upgrade("airBullets", new Upgrade[]{

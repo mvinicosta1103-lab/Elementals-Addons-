@@ -42,10 +42,8 @@ public class AbilityAirBall implements Ability {
         PlayerData plrData = PlayerData.get(bender.player);
 
         float speed = 0.75f;
-        if (plrData.canUseUpgrade("airBallSpeedII")) {
+        if (plrData.canUseUpgrade("airBallSpeedI")) {
             speed = 1.75f;
-        } else if (plrData.canUseUpgrade("airBallSpeedI")) {
-            speed = 1.25f;
         }
 
         entity.setDeltaMovement(bender.player, bender.player.getXRot(), bender.player.getYRot(), 0, speed, 0);
@@ -55,7 +53,7 @@ public class AbilityAirBall implements Ability {
     public void onRightClick(Bender bender, boolean started) {
         onRemove(bender);
     }
-    
+
 
     @Override
     public void onRemove(Bender bender) {

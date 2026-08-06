@@ -590,9 +590,6 @@
   "upgrade.elementals.airBallSpeedI": "Speed I",
   "upgrade.elementals.airBallSpeedI.description": " Makes air ball faster, allowing you to get more range",
 
-  "upgrade.elementals.airBallSpeedII": "Speed II",
-  "upgrade.elementals.airBallSpeedII.description": " Makes air ball even faster, allowing you to get more range",
-
   "upgrade.elementals.airBullets": "Bullets",
   "upgrade.elementals.airBullets.description": " Compressing air into multiple little pellets allows you to unleash a barrage upon your enemies.",
   "upgrade.elementals.airBullets.use": " Use: %d + sneak",
