@@ -323,9 +323,6 @@
   "upgrade.elementals.fireBallSpeedI": "Speed I",
   "upgrade.elementals.fireBallSpeedI.description": " Makes fireball faster, allowing you to get more range",
 
-  "upgrade.elementals.fireBallSpeedII": "Speed II",
-  "upgrade.elementals.fireBallSpeedII.description": " Makes fireball even faster, allowing you to get more range",
-
   "upgrade.elementals.flameThrower": "Flamethrower",
   "upgrade.elementals.flameThrower.description": " Makes a stream of fire to incinerate enemies in front of you.",
   "upgrade.elementals.flameThrower.use": " Use: %d + sneak -> then r-click",

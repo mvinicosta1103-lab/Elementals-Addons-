@@ -31,9 +31,7 @@ public class FireElement extends Element {
                 },2),
                 new Upgrade("fireArc", new Upgrade[]{
                         new Upgrade("fireBall", new Upgrade[]{
-                                new Upgrade("fireBallSpeedI", new Upgrade[]{
-                                        new Upgrade("fireBallSpeedII",1)
-                                },1)
+                                new Upgrade("fireBallSpeedI", 1)
                         }, false, -1,2),
                         new Upgrade("fireArcDamageI", new Upgrade[]{
                                 new Upgrade("flameThrower", new Upgrade[]{
