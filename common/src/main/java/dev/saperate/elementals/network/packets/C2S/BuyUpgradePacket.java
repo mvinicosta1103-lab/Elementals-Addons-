@@ -18,8 +18,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 public record BuyUpgradePacket(String name) {
     public static final StreamCodec<FriendlyByteBuf, BuyUpgradePacket> STREAM_CODEC = StreamCodec.ofMember(BuyUpgradePacket::encode, BuyUpgradePacket::new);
-    
-    
+
+
     public static CustomPacketPayload.Type<CustomPacketPayload> type()
     {
         return new CustomPacketPayload.Type<>(ElementalsNetworking.BUY_UPGRADE_PACKET_ID);
@@ -37,7 +37,7 @@ public record BuyUpgradePacket(String name) {
     public static void handle(PacketContext<BuyUpgradePacket> ctx)
     {
         ElementalsNetworking.expectSideOrThrow(ctx.side(), Side.SERVER);
-        
+
         String name = ctx.message().name();
         ServerPlayer player = ctx.sender();
         Bender bender = Bender.getBender(player);
@@ -57,10 +57,10 @@ public record BuyUpgradePacket(String name) {
 
         PlayerData plrData = PlayerData.get(player);
         if (plrData.buyUpgrade(upgrade)) {
-            if(upgrade.parent.exclusive){
-                //Will disable sister upgrades
-                plrData.setUpgrade(upgrade,true);
-            }
+            // Note: exclusivity enforcement was removed from PlayerData#setUpgrade, so calling it here
+            // no longer disables sister upgrades - it only risked leaving previously-toggled-off children
+            // permanently stuck disabled (see PlayerData#fixUpgradeChildrenRecursive). buyUpgrade() already
+            // persists the purchase as enabled, so no extra call is needed.
             Network.getNetworkHandler().sendToClient(SyncUpgradeListPacket.createFromBender(bender), player);
             Network.getNetworkHandler().sendToClient(SyncLevelPacket.createFromBender(bender), player);
         }

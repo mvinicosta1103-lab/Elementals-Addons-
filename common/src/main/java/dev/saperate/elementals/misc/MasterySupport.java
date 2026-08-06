@@ -51,7 +51,7 @@ public final class MasterySupport {
         if (node == null) {
             return true;
         }
-        if (node.name != null && !bender.plrData.canUseUpgrade(node.name)) {
+        if (node.name != null && !bender.plrData.hasUpgrade(node.name)) {
             return false;
         }
         Upgrade[] children = node.children;

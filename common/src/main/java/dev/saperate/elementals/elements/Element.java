@@ -175,7 +175,7 @@ public abstract class Element{
      * @return True if this node and the required part of its subtree are maxed out
      */
     private static boolean isBranchMaxed(Upgrade upgrade, PlayerData plrData) {
-        if (!plrData.canUseUpgrade(upgrade.name)) {
+        if (!plrData.hasUpgrade(upgrade.name)) {
             return false;
         }
         if (upgrade.children.length == 0) {

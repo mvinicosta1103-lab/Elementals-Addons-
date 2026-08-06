@@ -39,6 +39,20 @@ public class PlayerData {
     }
 
     /**
+     * Checks if the player has PURCHASED the upgrade, regardless of whether it is
+     * currently toggled on or off. Unlike {@link #canUseUpgrade(String)}, this does not
+     * care about the enabled/disabled state - use this for anything that checks skill
+     * tree completion/mastery, since a toggled-off (but paid for) upgrade should still
+     * count towards it.
+     * @param upgradeName The name of the upgrade we are checking
+     * @return true if the player has bought this upgrade at any point
+     */
+    public boolean hasUpgrade(String upgradeName) {
+        Upgrade key = new Upgrade(upgradeName, 0);
+        return upgrades.containsKey(key);
+    }
+
+    /**
      * This does not automatically sync the level of the player,
      * to do that, use the send method in SyncLevelC2SPacket.
      * @param upgrade The upgrade we want to buy
@@ -70,7 +84,7 @@ public class PlayerData {
     }
 
     /**
-     * Toggles an upgrade. 
+     * Toggles an upgrade.
      * Making it enabled will allow it to affect bending, disabled will make it act as if it was not bought.
      * It takes into account exclusive upgrades
      * Does nothing if it is missing
@@ -83,7 +97,7 @@ public class PlayerData {
     }
 
     /**
-     * Changes the status of an upgrade between on and off. 
+     * Changes the status of an upgrade between on and off.
      * Disabled, the upgrade will act as if it was not bought
      * It takes into account exclusive upgrades
      * Does nothing if it is missing or if the parent is disabled (or missing)
